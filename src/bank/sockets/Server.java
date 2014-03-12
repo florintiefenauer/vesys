@@ -64,8 +64,11 @@ public class Server {
 					case "getAccount":
 						System.out.println("getAccount");
 						Account acc = (Account) bank.getAccount(in.readUTF());
-						if(acc != null) out.writeObject(acc.getNumber());
-						else out.writeObject(null);
+						if (acc != null) { 
+							out.writeObject(acc.getNumber());
+						} else {
+							out.writeObject(null);
+						}
 						break;
 					case "transfer":
 						System.out.println("transfer");
