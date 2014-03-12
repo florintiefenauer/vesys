@@ -181,10 +181,7 @@ public class Server {
 	}
 
 	static class Account implements bank.Account {
-		/**
-		 * 
-		 */
-		private static final long serialVersionUID = 9053374679920583028L;
+
 		private String number;
 		private String owner;
 		private double balance;

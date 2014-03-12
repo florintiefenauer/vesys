@@ -139,10 +139,7 @@ public class Driver implements bank.BankDriver {
 	}
 
 	static class Account implements bank.Account {
-		/**
-		 * 
-		 */
-		private static final long serialVersionUID = 7766880046540449827L;
+
 		private String number;
 		private DataOutputStream out;
 		private ObjectInputStream in;
