@@ -57,6 +57,7 @@ public class Driver implements bank.BankDriver {
 				inObj = in.readObject();
 			} catch (ClassNotFoundException e) {
 				System.out.println("Fatal Error");
+				throw new RuntimeException();
 			}
 			if (inObj instanceof Set<?>) {
 				return (Set<String>) inObj;
@@ -74,6 +75,7 @@ public class Driver implements bank.BankDriver {
 				inObj = in.readObject();
 			} catch (ClassNotFoundException e) {
 				System.out.println("Fatal Error");
+				throw new RuntimeException();
 			}
 			if (inObj instanceof String) {
 				return (String) inObj;
@@ -90,6 +92,7 @@ public class Driver implements bank.BankDriver {
 				inObj = in.readObject();
 			} catch (ClassNotFoundException e) {
 				System.out.println("Fatal Error");
+				throw new RuntimeException();
 			}
 			if (inObj instanceof Boolean) {
 				return (Boolean) inObj;
@@ -106,6 +109,7 @@ public class Driver implements bank.BankDriver {
 				inObj = in.readObject();
 			} catch (ClassNotFoundException e) {
 				System.out.println("Fatal Error");
+				throw new RuntimeException();
 			}
 			if (inObj instanceof String) {
 				return new Account((String) inObj, out, in);
@@ -125,6 +129,7 @@ public class Driver implements bank.BankDriver {
 				inObj = in.readObject();
 			} catch (ClassNotFoundException e) {
 				System.out.println("Fatal Error");
+				throw new RuntimeException();
 			}
 			if (inObj instanceof InactiveException) {
 				throw (InactiveException) inObj;
@@ -160,6 +165,7 @@ public class Driver implements bank.BankDriver {
 				inObj = in.readObject();
 			} catch (ClassNotFoundException e) {
 				System.out.println("Fatal Error");
+				throw new RuntimeException();
 			}
 			if (inObj instanceof Double) {
 				return (double) inObj;
@@ -177,6 +183,7 @@ public class Driver implements bank.BankDriver {
 				inObj = in.readObject();
 			} catch (ClassNotFoundException e) {
 				System.out.println("Fatal Error");
+				throw new RuntimeException();
 			}
 			if (inObj instanceof String) {
 				return (String) inObj;
@@ -199,6 +206,7 @@ public class Driver implements bank.BankDriver {
 				inObj = in.readObject();
 			} catch (ClassNotFoundException e) {
 				System.out.println("Fatal Error");
+				throw new RuntimeException();
 			}
 			if (inObj instanceof Boolean) {
 				return (boolean) inObj;
@@ -218,6 +226,7 @@ public class Driver implements bank.BankDriver {
 				inObj = in.readObject();
 			} catch (ClassNotFoundException e) {
 				System.out.println("Fatal Error");
+				throw new RuntimeException();
 			}
 			if (inObj instanceof InactiveException) {
 				throw (InactiveException) inObj;
@@ -238,6 +247,7 @@ public class Driver implements bank.BankDriver {
 				inObj = in.readObject();
 			} catch (ClassNotFoundException e) {
 				System.out.println("Fatal Error");
+				throw new RuntimeException();
 			}
 			if (inObj instanceof InactiveException) {
 				throw (InactiveException) inObj;
