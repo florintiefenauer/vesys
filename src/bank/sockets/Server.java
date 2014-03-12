@@ -155,7 +155,7 @@ public class Server {
 		@Override
 		public boolean closeAccount(String number) {
 			Account acc = accounts.get(number);
-			if (acc.balance == 0 && acc.isActive()) {
+			if (acc != null && acc.balance == 0 && acc.isActive()) {
 				acc.active = false;
 				return true;
 			}
