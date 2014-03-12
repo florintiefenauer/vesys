@@ -27,8 +27,8 @@ public class Driver implements bank.BankDriver {
 		}
 		bank = new Bank();
 		bank.socket = new Socket(server, port, null, 0);
-		bank.out =new DataOutputStream(new BufferedOutputStream(bank.socket.getOutputStream()));
-		bank.in = new ObjectInputStream(new BufferedInputStream(bank.socket.getInputStream()));
+		bank.out =new DataOutputStream(bank.socket.getOutputStream());
+		bank.in = new ObjectInputStream(bank.socket.getInputStream());
 	}
 
 	@Override
@@ -112,7 +112,7 @@ public class Driver implements bank.BankDriver {
 				throw new RuntimeException();
 			}
 			if (inObj instanceof String) {
-				return new Account((String) inObj, out, in);
+				return new Account(number,(String) inObj, out, in);
 			}
 			return null;
 		}
@@ -145,12 +145,14 @@ public class Driver implements bank.BankDriver {
 
 	static class Account implements bank.Account {
 
-		private String number;
+		private final String number;
+		private final String owner;
 		private DataOutputStream out;
 		private ObjectInputStream in;
 
-		private Account(String number, DataOutputStream out, ObjectInputStream in) {
+		private Account(String number, String owner, DataOutputStream out, ObjectInputStream in) {
 			this.number = number;
+			this.owner = owner;
 			this.out = out;
 			this.in = in;
 		}
@@ -175,20 +177,7 @@ public class Driver implements bank.BankDriver {
 
 		@Override
 		public String getOwner() throws IOException {
-			out.writeUTF("getOwner");
-			out.writeUTF(number);
-
-			Object inObj = null;
-			try {
-				inObj = in.readObject();
-			} catch (ClassNotFoundException e) {
-				System.out.println("Fatal Error");
-				throw new RuntimeException();
-			}
-			if (inObj instanceof String) {
-				return (String) inObj;
-			}
-			return null;
+			return owner;
 		}
 
 		@Override
