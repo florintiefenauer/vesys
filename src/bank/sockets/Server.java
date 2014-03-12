@@ -65,7 +65,7 @@ public class Server {
 						System.out.println("getAccount");
 						Account acc = (Account) bank.getAccount(in.readUTF());
 						if (acc != null) { 
-							out.writeObject(acc.getNumber());
+							out.writeObject(acc.getOwner());
 						} else {
 							out.writeObject(null);
 						}

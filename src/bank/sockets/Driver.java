@@ -145,8 +145,8 @@ public class Driver implements bank.BankDriver {
 
 	static class Account implements bank.Account {
 
-		private final String number;
-		private final String owner;
+		private String number;
+		private String owner;
 		private DataOutputStream out;
 		private ObjectInputStream in;
 
