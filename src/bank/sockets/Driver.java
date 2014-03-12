@@ -171,6 +171,8 @@ public class Driver implements bank.BankDriver {
 			}
 			if (inObj instanceof Double) {
 				return (double) inObj;
+			} else if (inObj instanceof NullPointerException){
+				throw (NullPointerException) inObj;
 			}
 			return 0.0;
 		}
@@ -199,6 +201,8 @@ public class Driver implements bank.BankDriver {
 			}
 			if (inObj instanceof Boolean) {
 				return (boolean) inObj;
+			} else if (inObj instanceof NullPointerException){
+				throw (NullPointerException) inObj;
 			}
 			return false;
 		}
