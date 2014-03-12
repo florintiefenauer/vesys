@@ -182,8 +182,8 @@ public class Server {
 
 	static class Account implements bank.Account {
 
-		private String number;
-		private String owner;
+		private final String number;
+		private final String owner;
 		private double balance;
 		private boolean active = true;
 		private static int count = 0;
