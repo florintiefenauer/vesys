@@ -43,8 +43,8 @@ public class Server {
 		public void run() {
 			System.out.println("connection from " + s);
 			try {
-				DataInputStream in = new DataInputStream(new BufferedInputStream(s.getInputStream()));
-				ObjectOutputStream out = new ObjectOutputStream(new BufferedOutputStream(s.getOutputStream()));
+				DataInputStream in = new DataInputStream(s.getInputStream());
+				ObjectOutputStream out = new ObjectOutputStream(s.getOutputStream());
 				while (!s.isClosed()) {
 					String method = in.readUTF();
 
@@ -85,11 +85,6 @@ public class Server {
 						System.out.println("getBalance");
 						out.writeObject(bank.getAccount(in.readUTF())
 								.getBalance());
-						break;
-					case "getOwner":
-						System.out.println("getOwner");
-						out.writeObject(bank.getAccount(in.readUTF())
-								.getOwner());
 						break;
 					case "isActive":
 						System.out.println("isActive");
