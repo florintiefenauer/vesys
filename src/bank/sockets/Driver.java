@@ -247,6 +247,8 @@ public class Driver implements bank.BankDriver {
 				throw (OverdrawException) inObj;
 			} else if (inObj instanceof IllegalArgumentException) {
 				throw (IllegalArgumentException) inObj;
+			} else if (inObj instanceof NullPointerException){
+				throw (NullPointerException) inObj;
 			}
 		}
 
