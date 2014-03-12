@@ -64,8 +64,11 @@ public class Server {
 					case "getAccount":
 						System.out.println("getAccount");
 						Account acc = (Account) bank.getAccount(in.readUTF());
-						if(acc != null) out.writeObject(acc.getOwner());
-						else out.writeObject(null);
+						if (acc != null) { 
+							out.writeObject(acc.getNumber());
+						} else {
+							out.writeObject(null);
+						}
 						break;
 					case "transfer":
 						System.out.println("transfer");
@@ -152,7 +155,7 @@ public class Server {
 		@Override
 		public boolean closeAccount(String number) {
 			Account acc = accounts.get(number);
-			if (acc != null && acc.balance == 0 && acc.isActive()) {
+			if (acc.balance == 0 && acc.isActive()) {
 				acc.active = false;
 				return true;
 			}
@@ -161,7 +164,7 @@ public class Server {
 		}
 
 		@Override
-		public bank.Account getAccount(String number) {
+		public bank.Account getAccount(String number){
 			return accounts.get(number);
 		}
 
