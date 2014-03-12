@@ -83,13 +83,23 @@ public class Server {
 						break;
 					case "getBalance":
 						System.out.println("getBalance");
-						out.writeObject(bank.getAccount(in.readUTF())
-								.getBalance());
+						try{
+							double balance = bank.getAccount(in.readUTF()).getBalance();
+							out.writeObject(balance);
+						}catch (NullPointerException e){
+							out.writeObject(e);
+						}
+						
 						break;
 					case "isActive":
 						System.out.println("isActive");
-						out.writeObject(bank.getAccount(in.readUTF())
-								.isActive());
+						try{
+							boolean isActive = bank.getAccount(in.readUTF()).isActive();
+							out.writeObject(isActive);
+						}catch (NullPointerException e){
+							out.writeObject(e);
+						}
+
 						break;
 					case "deposit":
 						System.out.println("deposit");
