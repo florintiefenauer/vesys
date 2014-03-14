@@ -1,7 +1,9 @@
 <?xml version="1.0"?>
 <project name="bank" default="compile" basedir=".">
 
+	<property file="build.local" />
 	<property file="build.properties" />
+	<property name="classes.dir" value="${basedir}/bin"/>
 	
 	<path id="bank.class.path">
 <!--
@@ -50,6 +52,18 @@
 			<arg value="1234"/>
 			<classpath refid="bank.class.path"/>
 		</java>
+	</target>
+	
+	<target name="bankHTTP.war" depends="compile">
+		<war warfile="${basedir}/bankHTTP.war" needxmlfile="false">
+			<classes dir="${classes.dir}" >
+				<include name="bank/http/Server*.class" />
+			</classes>
+		</war>
+	</target>
+	
+	<target name="bankHTTP.deploy" depends="bankHTTP.war">
+		<copy file="${basedir}/bankHTTP.war" todir="${tomcat.home}/webapps"/>
 	</target>
 	
 </project>

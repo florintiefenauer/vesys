@@ -5,15 +5,20 @@ import java.io.BufferedOutputStream;
 import java.io.DataInputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
-import java.net.ServerSocket;
+import java.io.PrintWriter;
 import java.net.Socket;
+import java.util.Date;
+import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 
 import bank.InactiveException;
@@ -22,18 +27,29 @@ import bank.OverdrawException;
 @WebServlet("/*")
 public class Server extends HttpServlet {
 
-	private static Bank bank = new Bank();
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -9132774871593752541L;
 
-	public static void main(String args[]) throws IOException {
-		int port = 12345;
-		try (ServerSocket server = new ServerSocket(port)) {
-			System.out.println("Startet Bank Server on port " + port);
-			while (true) {
-				Socket s = server.accept();
-				Thread t = new Thread(new ServerHandler(s, bank));
-				t.start();
-			}
+	@Override
+	public void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws IOException, ServletException {
+		System.out.println(">> " + getClass().getName() + " " + new Date());
+		PrintWriter out = response.getWriter();
+		response.setContentType("text/html");
+		out.println("<html><body><pre>");
+		Enumeration<?> e;
+
+		out.println("\nParameters:");
+		e = request.getParameterNames();
+		while (e.hasMoreElements()) {
+			String name = (String) e.nextElement();
+			out.println(name + " = " + request.getParameter(name));
 		}
+
+		out.println("</pre></body></html>");
+		System.out.println("<< " + getClass().getName());
 	}
 
 	static class ServerHandler implements Runnable {
