@@ -2,12 +2,20 @@ package bank.http;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
+import java.io.ByteArrayInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.ObjectInputStream;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
 import java.net.Socket;
+import java.net.URL;
 import java.net.UnknownHostException;
 import java.util.Set;
+
+import sun.misc.IOUtils;
+import sun.net.www.http.HttpClient;
 
 import bank.InactiveException;
 import bank.OverdrawException;
@@ -16,7 +24,7 @@ public class Driver implements bank.BankDriver {
 
 	private Bank bank = null;
 	private String server = "localhost";
-	private int port = 12345;
+	private int port = 8080;
 
 	@Override
 	public void connect(String[] args) throws UnknownHostException, IOException {
@@ -25,16 +33,11 @@ public class Driver implements bank.BankDriver {
 			server = args[0];
 			port = Integer.parseInt(args[1]);
 		}
-		bank = new Bank();
-		bank.socket = new Socket(server, port, null, 0);
-		bank.out =new DataOutputStream(bank.socket.getOutputStream());
-		bank.in = new ObjectInputStream(bank.socket.getInputStream());
+		bank = new Bank(this);
 	}
 
 	@Override
 	public void disconnect() throws IOException {
-		bank.socket.close();
-		bank.socket = null;
 		bank = null;
 	}
 
@@ -42,19 +45,34 @@ public class Driver implements bank.BankDriver {
 	public Bank getBank() {
 		return bank;
 	}
+	
+	public ObjectInputStream sendGet(String params) throws IOException{
+		
+		String sUrl = "http://"+server+":"+port+"/bankHTTP/bank?"+params;
+		URL url = new URL(sUrl);
+		System.out.println(sUrl);
+		HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+		InputStream is = connection.getInputStream();
+		byte[] byteArray = new byte[connection.getContentLength()];
+		is.read(byteArray);
+		ByteArrayInputStream byteIn = new ByteArrayInputStream(byteArray);
+		
+		return new ObjectInputStream(byteIn);
+	}
 
 	static class Bank implements bank.Bank {
 
-		Socket socket = null;
-		DataOutputStream out = null;
-		ObjectInputStream in = null;
+		Driver driver;
+		private Bank(Driver driver){
+			this.driver = driver;
+			
+		}
 
 		@Override
 		public Set<String> getAccountNumbers() throws IOException {
-			out.writeUTF("getAccountNumbers");
 			Object inObj = null;
 			try {
-				inObj = in.readObject();
+				inObj = driver.sendGet("getAccountNumbers").readObject();
 			} catch (ClassNotFoundException e) {
 				System.out.println("Fatal Error");
 				throw new RuntimeException();
@@ -67,12 +85,9 @@ public class Driver implements bank.BankDriver {
 
 		@Override
 		public String createAccount(String owner) throws IOException {
-			out.writeUTF("createAccount");
-			out.writeUTF(owner);
-
 			Object inObj = null;
 			try {
-				inObj = in.readObject();
+				inObj = driver.sendGet("createAccount"+"?owner="+owner).readObject();
 			} catch (ClassNotFoundException e) {
 				System.out.println("Fatal Error");
 				throw new RuntimeException();
@@ -85,11 +100,9 @@ public class Driver implements bank.BankDriver {
 
 		@Override
 		public boolean closeAccount(String number) throws IOException {
-			out.writeUTF("closeAccount");
-			out.writeUTF(number);
 			Object inObj = null;
 			try {
-				inObj = in.readObject();
+				inObj = driver.sendGet("closeAccount"+"?number="+number).readObject();
 			} catch (ClassNotFoundException e) {
 				System.out.println("Fatal Error");
 				throw new RuntimeException();
@@ -102,17 +115,15 @@ public class Driver implements bank.BankDriver {
 
 		@Override
 		public bank.Account getAccount(String number) throws IOException {
-			out.writeUTF("getAccount");
-			out.writeUTF(number);
 			Object inObj = null;
 			try {
-				inObj = in.readObject();
+				inObj = driver.sendGet("getAccount"+"?number="+number).readObject();
 			} catch (ClassNotFoundException e) {
 				System.out.println("Fatal Error");
 				throw new RuntimeException();
 			}
 			if (inObj instanceof String) {
-				return new Account(number,(String) inObj, out, in);
+				return new Account(number,(String) inObj, driver);
 			}
 			return null;
 		}
@@ -120,13 +131,9 @@ public class Driver implements bank.BankDriver {
 		@Override
 		public void transfer(bank.Account from, bank.Account to, double amount)
 				throws IOException, InactiveException, OverdrawException {
-			out.writeUTF("transfer");
-			out.writeUTF(from.getNumber());
-			out.writeUTF(to.getNumber());
-			out.writeDouble(amount);
 			Object inObj = null;
 			try {
-				inObj = in.readObject();
+				inObj = driver.sendGet("transfer"+"?from="+from.getNumber()+"&to"+to.getNumber()+"&amount"+amount).readObject();
 			} catch (ClassNotFoundException e) {
 				System.out.println("Fatal Error");
 				throw new RuntimeException();
@@ -147,24 +154,21 @@ public class Driver implements bank.BankDriver {
 
 		private String number;
 		private String owner;
-		private DataOutputStream out;
 		private ObjectInputStream in;
+		private Driver driver;
 
-		private Account(String number, String owner, DataOutputStream out, ObjectInputStream in) {
+		private Account(String number, String owner, Driver driver) {
 			this.number = number;
 			this.owner = owner;
-			this.out = out;
-			this.in = in;
+			this.driver = driver;
 		}
 
 		@Override
 		public double getBalance() throws IOException {
-			out.writeUTF("getBalance");
-			out.writeUTF(number);
 
 			Object inObj = null;
 			try {
-				inObj = in.readObject();
+				inObj = driver.sendGet("getBalance"+"?number="+number).readObject();
 			} catch (ClassNotFoundException e) {
 				System.out.println("Fatal Error");
 				throw new RuntimeException();
@@ -189,12 +193,10 @@ public class Driver implements bank.BankDriver {
 
 		@Override
 		public boolean isActive() throws IOException {
-			out.writeUTF("isActive");
-			out.writeUTF(number);
 
 			Object inObj = null;
 			try {
-				inObj = in.readObject();
+				inObj = driver.sendGet("isActive"+"?number="+number).readObject();
 			} catch (ClassNotFoundException e) {
 				System.out.println("Fatal Error");
 				throw new RuntimeException();
@@ -210,13 +212,10 @@ public class Driver implements bank.BankDriver {
 		@Override
 		public void deposit(double amount) throws InactiveException,
 				IOException {
-			out.writeUTF("deposit");
-			out.writeUTF(number);
-			out.writeDouble(amount);
 
 			Object inObj = null;
 			try {
-				inObj = in.readObject();
+				inObj = driver.sendGet("deposit"+"?number="+number+"&amount"+amount).readObject();
 			} catch (ClassNotFoundException e) {
 				System.out.println("Fatal Error");
 				throw new RuntimeException();
@@ -234,13 +233,10 @@ public class Driver implements bank.BankDriver {
 		@Override
 		public void withdraw(double amount) throws InactiveException,
 				OverdrawException, IOException {
-			out.writeUTF("withdraw");
-			out.writeUTF(number);
-			out.writeDouble(amount);
 
 			Object inObj = null;
 			try {
-				inObj = in.readObject();
+				inObj = driver.sendGet("deposit"+"?number="+number+"&amount"+amount).readObject();
 			} catch (ClassNotFoundException e) {
 				System.out.println("Fatal Error");
 				throw new RuntimeException();
