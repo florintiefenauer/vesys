@@ -4,6 +4,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.io.PrintWriter;
+import java.util.Date;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -23,17 +24,21 @@ import bank.OverdrawException;
 @WebServlet("/bank")
 public class Server extends HttpServlet {
 
+	
+	ServerHelper helper;
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = -9132774871593752541L;
 
-	private Bank bank = new Bank();
+	
 
 	@Override
 	public void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws IOException, ServletException {
-
+		
+		if(helper != null) helper = new ServerHelper();
+		
 		ByteArrayOutputStream byteOut = new ByteArrayOutputStream();
 		ObjectOutputStream out = new ObjectOutputStream(byteOut);
 		
@@ -49,7 +54,7 @@ public class Server extends HttpServlet {
 			i++;
 		}
 
-		out.writeObject(getResponse(method, params));
+		out.writeObject(helper.getResponse(method, params));
 		
 		byte[] buf = byteOut.toByteArray();
 		response.setContentType("application/octet-stream");
@@ -58,85 +63,90 @@ public class Server extends HttpServlet {
 		ServletOutputStream sOut = response.getOutputStream();
 		sOut.write(buf);
 		sOut.close();
+		
+		
 	}
 	
-	@Override
-	protected void doPost(HttpServletRequest req, HttpServletResponse resp)
-			throws ServletException, IOException {
-		doGet(req, resp);
-	}
 
-	private Object getResponse(String method, String[] params) throws IOException {
+	
+	static class ServerHelper{
 		
-		switch (method) {
-		case "getAccountNumbers":
-			System.out.println("getAccountNumbers");
-			return bank.getAccountNumbers();
-		case "createAccount":
-			System.out.println("createAccount");
-			return bank.createAccount(params[0]);
-		case "closeAccount":
-			System.out.println("closeAccount");
-			return bank.closeAccount(params[0]);
-		case "getAccount":
-			System.out.println("getAccount");
-			Account acc = (Account) bank.getAccount(params[0]);
-			if (acc != null) {
-				return acc.getOwner();
-			} else {
-				return null;
-			}
-		case "transfer":
-			System.out.println("transfer");
-			try {
-				bank.transfer(bank.getAccount(params[0]),
-						bank.getAccount(params[1]),
-						Double.parseDouble(params[2]));
-				return null;
-			} catch (Exception e) {
-				return e;
-			}
-		case "getBalance":
-			System.out.println("getBalance");
-			try {
-				double balance = bank.getAccount(params[0]).getBalance();
-				return balance;
-			} catch (NullPointerException e) {
-				return e;
-			}
-		case "isActive":
-			System.out.println("isActive");
-			try {
-				boolean isActive = bank.getAccount(params[0]).isActive();
-				return isActive;
-			} catch (NullPointerException e) {
-				return e;
-			}
-		case "deposit":
-			System.out.println("deposit");
-			try {
-				bank.getAccount(params[0]).deposit(
-						Double.parseDouble(params[1]));
-				return null;
-			} catch (Exception e) {
-				return e;
-			}
-		case "withdraw":
-			System.out.println("withdraw");
-			try {
-				bank.getAccount(params[0]).withdraw(
-						Double.parseDouble(params[1]));
-				return null;
-			} catch (Exception e) {
-				return e;
-			}
-		default:
-			System.out.println("False input");
-			throw new RuntimeException();
+		private Bank bank = new Bank();
+		
+		
 
+		private Object getResponse(String method, String[] params) throws IOException {
+			
+			switch (method) {
+			case "getAccountNumbers":
+				System.out.println("getAccountNumbers");
+				return bank.getAccountNumbers();
+			case "createAccount":
+				System.out.println("createAccount");
+				return bank.createAccount(params[0]);
+			case "closeAccount":
+				System.out.println("closeAccount");
+				return bank.closeAccount(params[0]);
+			case "getAccount":
+				System.out.println("getAccount");
+				Account acc = (Account) bank.getAccount(params[0]);
+				if (acc != null) {
+					return acc.getOwner();
+				} else {
+					return null;
+				}
+			case "transfer":
+				System.out.println("transfer");
+				try {
+					bank.transfer(bank.getAccount(params[0]),
+							bank.getAccount(params[1]),
+							Double.parseDouble(params[2]));
+					return null;
+				} catch (Exception e) {
+					return e;
+				}
+			case "getBalance":
+				System.out.println("getBalance");
+				try {
+					double balance = bank.getAccount(params[0]).getBalance();
+					return balance;
+				} catch (NullPointerException e) {
+					return e;
+				}
+			case "isActive":
+				System.out.println("isActive");
+				try {
+					boolean isActive = bank.getAccount(params[0]).isActive();
+					return isActive;
+				} catch (NullPointerException e) {
+					return e;
+				}
+			case "deposit":
+				System.out.println("deposit");
+				try {
+					bank.getAccount(params[0]).deposit(
+							Double.parseDouble(params[1]));
+					return null;
+				} catch (Exception e) {
+					return e;
+				}
+			case "withdraw":
+				System.out.println("withdraw");
+				try {
+					bank.getAccount(params[0]).withdraw(
+							Double.parseDouble(params[1]));
+					return null;
+				} catch (Exception e) {
+					return e;
+				}
+			default:
+				System.out.println("False input");
+				throw new RuntimeException();
+
+			}
 		}
 	}
-
+	
 	static class Bank implements bank.Bank {
 
 		private final Map<String, Account> accounts = new HashMap<>();
@@ -249,4 +259,3 @@ public class Server extends HttpServlet {
 	}
 
 }
-

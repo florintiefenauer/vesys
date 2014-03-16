@@ -87,7 +87,7 @@ public class Driver implements bank.BankDriver {
 		public String createAccount(String owner) throws IOException {
 			Object inObj = null;
 			try {
-				inObj = driver.sendGet("createAccount"+"?owner="+owner).readObject();
+				inObj = driver.sendGet("createAccount"+"&owner="+owner).readObject();
 			} catch (ClassNotFoundException e) {
 				System.out.println("Fatal Error");
 				throw new RuntimeException();
@@ -102,7 +102,7 @@ public class Driver implements bank.BankDriver {
 		public boolean closeAccount(String number) throws IOException {
 			Object inObj = null;
 			try {
-				inObj = driver.sendGet("closeAccount"+"?number="+number).readObject();
+				inObj = driver.sendGet("closeAccount"+"&number="+number).readObject();
 			} catch (ClassNotFoundException e) {
 				System.out.println("Fatal Error");
 				throw new RuntimeException();
@@ -117,7 +117,7 @@ public class Driver implements bank.BankDriver {
 		public bank.Account getAccount(String number) throws IOException {
 			Object inObj = null;
 			try {
-				inObj = driver.sendGet("getAccount"+"?number="+number).readObject();
+				inObj = driver.sendGet("getAccount"+"&number="+number).readObject();
 			} catch (ClassNotFoundException e) {
 				System.out.println("Fatal Error");
 				throw new RuntimeException();
@@ -133,7 +133,7 @@ public class Driver implements bank.BankDriver {
 				throws IOException, InactiveException, OverdrawException {
 			Object inObj = null;
 			try {
-				inObj = driver.sendGet("transfer"+"?from="+from.getNumber()+"&to"+to.getNumber()+"&amount"+amount).readObject();
+				inObj = driver.sendGet("transfer"+"&from="+from.getNumber()+"&to"+to.getNumber()+"&amount"+amount).readObject();
 			} catch (ClassNotFoundException e) {
 				System.out.println("Fatal Error");
 				throw new RuntimeException();
@@ -168,7 +168,7 @@ public class Driver implements bank.BankDriver {
 
 			Object inObj = null;
 			try {
-				inObj = driver.sendGet("getBalance"+"?number="+number).readObject();
+				inObj = driver.sendGet("getBalance"+"&number="+number).readObject();
 			} catch (ClassNotFoundException e) {
 				System.out.println("Fatal Error");
 				throw new RuntimeException();
@@ -196,7 +196,7 @@ public class Driver implements bank.BankDriver {
 
 			Object inObj = null;
 			try {
-				inObj = driver.sendGet("isActive"+"?number="+number).readObject();
+				inObj = driver.sendGet("isActive"+"&number="+number).readObject();
 			} catch (ClassNotFoundException e) {
 				System.out.println("Fatal Error");
 				throw new RuntimeException();
@@ -215,7 +215,7 @@ public class Driver implements bank.BankDriver {
 
 			Object inObj = null;
 			try {
-				inObj = driver.sendGet("deposit"+"?number="+number+"&amount"+amount).readObject();
+				inObj = driver.sendGet("deposit"+"&number="+number+"&amount"+amount).readObject();
 			} catch (ClassNotFoundException e) {
 				System.out.println("Fatal Error");
 				throw new RuntimeException();
@@ -236,7 +236,7 @@ public class Driver implements bank.BankDriver {
 
 			Object inObj = null;
 			try {
-				inObj = driver.sendGet("deposit"+"?number="+number+"&amount"+amount).readObject();
+				inObj = driver.sendGet("deposit"+"&number="+number+"&amount"+amount).readObject();
 			} catch (ClassNotFoundException e) {
 				System.out.println("Fatal Error");
 				throw new RuntimeException();
