@@ -36,7 +36,7 @@ public class Server extends HttpServlet {
 			throws IOException, ServletException {
 		
 		if(helper == null) helper = new ServerHelper();
-		
+	
 		ByteArrayOutputStream byteOut = new ByteArrayOutputStream();
 		ObjectOutputStream out = new ObjectOutputStream(byteOut);
 		
