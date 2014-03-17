@@ -3,8 +3,6 @@ package bank.http;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
-import java.io.PrintWriter;
-import java.util.Date;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -37,8 +35,8 @@ public class Server extends HttpServlet {
 	public void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws IOException, ServletException {
 		
-		if(helper != null) helper = new ServerHelper();
-		
+		if(helper == null) helper = new ServerHelper();
+	
 		ByteArrayOutputStream byteOut = new ByteArrayOutputStream();
 		ObjectOutputStream out = new ObjectOutputStream(byteOut);
 		
