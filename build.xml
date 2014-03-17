@@ -58,6 +58,7 @@
 		<war warfile="${basedir}/bankHTTP.war" needxmlfile="false">
 			<classes dir="${classes.dir}" >
 				<include name="bank/http/Server*.class" />
+				<include name="bank/*.class" />
 			</classes>
 		</war>
 	</target>
