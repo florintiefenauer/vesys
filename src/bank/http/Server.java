@@ -22,14 +22,9 @@ import bank.OverdrawException;
 @WebServlet("/bank")
 public class Server extends HttpServlet {
 
-	
 	ServerHelper helper;
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -9132774871593752541L;
 
-	
+	private static final long serialVersionUID = -9132774871593752541L;	
 
 	@Override
 	public void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -39,7 +34,6 @@ public class Server extends HttpServlet {
 	
 		ByteArrayOutputStream byteOut = new ByteArrayOutputStream();
 		ObjectOutputStream out = new ObjectOutputStream(byteOut);
-		
 		
 		Enumeration<?> e = request.getParameterNames();
 
@@ -62,16 +56,11 @@ public class Server extends HttpServlet {
 		sOut.write(buf);
 		sOut.close();
 		
-		
 	}
-	
-
 	
 	static class ServerHelper{
 		
 		private Bank bank = new Bank();
-		
-		
 
 		private Object getResponse(String method, String[] params) throws IOException {
 			

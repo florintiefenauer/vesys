@@ -6,6 +6,7 @@ import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.net.URLConnection;
 import java.net.UnknownHostException;
 import java.util.Set;
 
@@ -44,7 +45,7 @@ public class Driver implements bank.BankDriver {
 		String sUrlReplaced = sUrl.replace(" ", "%20");
 		URL url = new URL(sUrlReplaced);
 		System.out.println(sUrlReplaced);
-		HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+		URLConnection connection = url.openConnection();
 		InputStream is = connection.getInputStream();
 		byte[] byteArray = new byte[connection.getContentLength()];
 		is.read(byteArray);
