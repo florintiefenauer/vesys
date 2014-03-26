@@ -7,6 +7,7 @@ import java.io.ObjectInputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
+import java.net.URLEncoder;
 import java.net.UnknownHostException;
 import java.util.Set;
 
@@ -41,14 +42,23 @@ public class Driver implements bank.BankDriver {
 	
 	public ObjectInputStream sendGet(String params) throws IOException{
 		
+		System.out.println(params);
 		String sUrl = "http://"+server+":"+port+"/bankHTTP/bank?"+params;
 		String sUrlReplaced = sUrl.replace(" ", "%20");
 		URL url = new URL(sUrlReplaced);
-		System.out.println(sUrlReplaced);
-		URLConnection connection = url.openConnection();
+		HttpURLConnection connection = (HttpURLConnection) url.openConnection();
 		InputStream is = connection.getInputStream();
-		byte[] byteArray = new byte[connection.getContentLength()];
-		is.read(byteArray);
+		
+		int size = connection.getContentLength();
+		byte[] byteArray = new byte[size];
+		int read = 0;
+		
+		while (read < size){
+			int n = is.read(byteArray, read, size - read);
+			if (n == -1) break; //EOF
+			read += n;
+		}
+		
 		ByteArrayInputStream byteIn = new ByteArrayInputStream(byteArray);
 		
 		return new ObjectInputStream(byteIn);
