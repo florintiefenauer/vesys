@@ -22,26 +22,27 @@ import bank.OverdrawException;
 @WebServlet("/bank")
 public class Server extends HttpServlet {
 
-	ServerHelper helper;
-
-	private static final long serialVersionUID = -9132774871593752541L;	
-
+	static ServerHelper helper;
+		static{
+		helper = new ServerHelper();
+	}
+	
 	@Override
 	public void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws IOException, ServletException {
 		
-		if(helper == null) helper = new ServerHelper();
 	
 		ByteArrayOutputStream byteOut = new ByteArrayOutputStream();
 		ObjectOutputStream out = new ObjectOutputStream(byteOut);
 		
 		Enumeration<?> e = request.getParameterNames();
 
-		String method = (String) e.nextElement();
+		String name = (String) e.nextElement();
+		String method = request.getParameter(name);
 		String[] params = new String[3];
 		int i = 0;
 		while (e.hasMoreElements()) {
-			String name = (String) e.nextElement();
+			name = (String) e.nextElement();
 			params[i] = request.getParameter(name);
 			i++;
 		}
@@ -60,7 +61,10 @@ public class Server extends HttpServlet {
 	
 	static class ServerHelper{
 		
-		private Bank bank = new Bank();
+		static Bank bank;
+		static {
+			bank = new Bank();
+		}
 
 		private Object getResponse(String method, String[] params) throws IOException {
 			
@@ -97,7 +101,7 @@ public class Server extends HttpServlet {
 				try {
 					double balance = bank.getAccount(params[0]).getBalance();
 					return balance;
-				} catch (NullPointerException e) {
+				} catch (IllegalArgumentException e) {
 					return e;
 				}
 			case "isActive":
