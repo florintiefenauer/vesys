@@ -18,6 +18,8 @@ import bank.OverdrawException;
 import bank.soap.client.jaxws.BankServiceImpl;
 import bank.soap.client.jaxws.BankServiceImplService;
 import bank.soap.client.jaxws.IOException_Exception;
+import bank.soap.client.jaxws.InactiveException_Exception;
+import bank.soap.client.jaxws.OverdrawException_Exception;
 
 public class Driver implements bank.BankDriver {
 
@@ -54,8 +56,13 @@ public class Driver implements bank.BankDriver {
 		}
 
 		@Override
-		public Set<String> getAccountNumbers() throws IOException {			
-			List<String> strList = port.getAccountNumbers();
+		public Set<String> getAccountNumbers() throws IOException{			
+			List<String> strList = null;
+			try {
+				strList = port.getAccountNumbers();
+			} catch (IOException_Exception e) {
+			    throw new IOException();
+			}
 			Set <String> strSet = new HashSet<String>();
 			for(String s : strList){
 				strSet.add(s);
@@ -65,23 +72,43 @@ public class Driver implements bank.BankDriver {
 
 		@Override
 		public String createAccount(String owner) throws IOException {
-			return port.createAccount(owner);
+			try {
+				return port.createAccount(owner);
+			} catch (IOException_Exception e) {
+				throw new IOException();
+			}
 		}
 
 		@Override
 		public boolean closeAccount(String number) throws IOException {
-			return port.closeAccount(number);
+			try {
+				return port.closeAccount(number);
+			} catch (IOException_Exception e) {
+				throw new IOException();
+			}
 		}
 
 		@Override
 		public bank.IAccount getAccount(String number) throws IOException {
-			return new Account (number, port.getAccount(number), port);
+			try {
+				return new Account (number, port.getAccount(number), port);
+			} catch (IOException_Exception e) {
+				throw new IOException();
+			}
 		}
 
 		@Override
 		public void transfer(bank.IAccount from, bank.IAccount to, double amount)
 				throws IOException, InactiveException, OverdrawException {
-			port.transfer(from.getNumber(), to.getNumber(), amount);
+			try {
+				port.transfer(from.getNumber(), to.getNumber(), amount);
+			} catch (IOException_Exception e) {
+				throw new IOException();
+			} catch (InactiveException_Exception e) {
+				throw new InactiveException();
+			} catch (OverdrawException_Exception e) {
+				throw new OverdrawException();
+			}
 		}
 
 	}
@@ -100,7 +127,11 @@ public class Driver implements bank.BankDriver {
 
 		@Override
 		public double getBalance() throws IOException {
-			return port.getBalance(number);
+			try {
+				return port.getBalance(number);
+			} catch (IOException_Exception e) {
+				throw new IOException();
+			}
 		}
 
 		@Override
@@ -115,19 +146,37 @@ public class Driver implements bank.BankDriver {
 
 		@Override
 		public boolean isActive() throws IOException {
-			return port.isActive(number);
+			try {
+				return port.isActive(number);
+			} catch (IOException_Exception e) {
+				throw new IOException();
+			}
 		}
 
 		@Override
 		public void deposit(double amount) throws InactiveException,
 				IOException {
-			port.deposit(number, amount);
+			try {
+				port.deposit(number, amount);
+			} catch (IOException_Exception e) {
+				throw new IOException();
+			} catch (InactiveException_Exception e) {
+				throw new InactiveException();
+			}
 		}
 
 		@Override
 		public void withdraw(double amount) throws InactiveException,
 				OverdrawException, IOException {
-			port.withdraw(number, amount);
+			try {
+				port.withdraw(number, amount);
+			} catch (IOException_Exception e) {
+				throw new IOException();
+			} catch (InactiveException_Exception e) {
+				throw new InactiveException();
+			} catch (OverdrawException_Exception e) {
+				throw new OverdrawException();
+			}
 		}
 
 	}
