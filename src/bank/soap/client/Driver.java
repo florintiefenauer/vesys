@@ -1,4 +1,4 @@
-package bank.soap;
+package bank.soap.client;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
