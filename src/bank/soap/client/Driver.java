@@ -10,24 +10,26 @@ import java.net.URLConnection;
 import java.net.URLEncoder;
 import java.net.UnknownHostException;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import bank.InactiveException;
 import bank.OverdrawException;
-import bank.soap.server.BankService;
-import bank.soap.server.BankServiceImpl;
+import bank.soap.client.jaxws.BankServiceImpl;
+import bank.soap.client.jaxws.BankServiceImplService;
+import bank.soap.client.jaxws.IOException_Exception;
 
 public class Driver implements bank.BankDriver {
 
 	private Bank bank = null;
-	private BankService service;
+	private BankServiceImplService service;
 	private BankServiceImpl port;
 
 	@Override
 	public void connect(String[] args) throws UnknownHostException, IOException {
 		
-		 service = new BankService();
-		 port = service.getBankServiceImpl();
+		 service = new BankServiceImplService();
+		 port = service.getBankServiceImplPort();
 		
 		bank = new Bank(port);
 	}
@@ -53,9 +55,9 @@ public class Driver implements bank.BankDriver {
 
 		@Override
 		public Set<String> getAccountNumbers() throws IOException {			
-			String[] strArr = (String[])port.getAccountNumbers();
+			List<String> strList = port.getAccountNumbers();
 			Set <String> strSet = new HashSet<String>();
-			for(String s : strArr){
+			for(String s : strList){
 				strSet.add(s);
 			}
 			return strSet;		
