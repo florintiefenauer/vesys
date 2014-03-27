@@ -32,7 +32,7 @@ public class Bank implements BankSoap {
 	}
 
 	@Override
-	public Set<String> getAccountNumbers() throws IOException {
+	public Object[] getAccountNumbers() throws IOException {
 		// TODO Auto-generated method stub
 		return null;
 	}

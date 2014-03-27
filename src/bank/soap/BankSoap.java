@@ -19,7 +19,7 @@ public interface BankSoap{
 
 	boolean closeAccount(String number) throws IOException;
 
-	Set<String> getAccountNumbers() throws IOException;
+	Object[] getAccountNumbers() throws IOException;
 
 //	@WebMethod(exclude = true)
 	Account getAccount(String number) throws IOException;
