@@ -31,8 +31,8 @@ public interface BankServiceImpl {
      * @param arg2
      * @param arg1
      * @param arg0
-     * @throws InactiveException_Exception
      * @throws IOException_Exception
+     * @throws InactiveException_Exception
      * @throws OverdrawException_Exception
      */
     @WebMethod
@@ -51,6 +51,63 @@ public interface BankServiceImpl {
         @WebParam(name = "arg2", targetNamespace = "")
         double arg2)
         throws IOException_Exception, InactiveException_Exception, OverdrawException_Exception
+    ;
+
+    /**
+     * 
+     * @param arg0
+     * @return
+     *     returns boolean
+     * @throws IOException_Exception
+     */
+    @WebMethod
+    @WebResult(targetNamespace = "")
+    @RequestWrapper(localName = "closeAccount", targetNamespace = "http://server.soap.bank/", className = "bank.soap.client.jaxws.CloseAccount")
+    @ResponseWrapper(localName = "closeAccountResponse", targetNamespace = "http://server.soap.bank/", className = "bank.soap.client.jaxws.CloseAccountResponse")
+    @Action(input = "http://server.soap.bank/BankServiceImpl/closeAccountRequest", output = "http://server.soap.bank/BankServiceImpl/closeAccountResponse", fault = {
+        @FaultAction(className = IOException_Exception.class, value = "http://server.soap.bank/BankServiceImpl/closeAccount/Fault/IOException")
+    })
+    public boolean closeAccount(
+        @WebParam(name = "arg0", targetNamespace = "")
+        String arg0)
+        throws IOException_Exception
+    ;
+
+    /**
+     * 
+     * @return
+     *     returns java.util.List<java.lang.Object>
+     * @throws IOException_Exception
+     */
+    @WebMethod
+    @WebResult(targetNamespace = "")
+    @RequestWrapper(localName = "getAccountNumbers", targetNamespace = "http://server.soap.bank/", className = "bank.soap.client.jaxws.GetAccountNumbers")
+    @ResponseWrapper(localName = "getAccountNumbersResponse", targetNamespace = "http://server.soap.bank/", className = "bank.soap.client.jaxws.GetAccountNumbersResponse")
+    @Action(input = "http://server.soap.bank/BankServiceImpl/getAccountNumbersRequest", output = "http://server.soap.bank/BankServiceImpl/getAccountNumbersResponse", fault = {
+        @FaultAction(className = IOException_Exception.class, value = "http://server.soap.bank/BankServiceImpl/getAccountNumbers/Fault/IOException")
+    })
+    public List<Object> getAccountNumbers()
+        throws IOException_Exception
+    ;
+
+    /**
+     * 
+     * @param arg0
+     * @return
+     *     returns java.lang.String
+     * @throws IOException_Exception
+     */
+    @WebMethod
+    @WebResult(targetNamespace = "")
+    @RequestWrapper(localName = "getAccount", targetNamespace = "http://server.soap.bank/", className = "bank.soap.client.jaxws.GetAccount")
+    @ResponseWrapper(localName = "getAccountResponse", targetNamespace = "http://server.soap.bank/", className = "bank.soap.client.jaxws.GetAccountResponse")
+    @Action(input = "http://server.soap.bank/BankServiceImpl/getAccountRequest", output = "http://server.soap.bank/BankServiceImpl/getAccountResponse", fault = {
+        @FaultAction(className = IOException_Exception.class, value = "http://server.soap.bank/BankServiceImpl/getAccount/Fault/IOException")
+    })
+    public String getAccount(
+        @WebParam(name = "arg0", targetNamespace = "")
+        String arg0)
+        throws IOException_Exception
     ;
 
     /**
@@ -82,63 +139,6 @@ public interface BankServiceImpl {
      */
     @WebMethod
     @WebResult(targetNamespace = "")
-    @RequestWrapper(localName = "closeAccount", targetNamespace = "http://server.soap.bank/", className = "bank.soap.client.jaxws.CloseAccount")
-    @ResponseWrapper(localName = "closeAccountResponse", targetNamespace = "http://server.soap.bank/", className = "bank.soap.client.jaxws.CloseAccountResponse")
-    @Action(input = "http://server.soap.bank/BankServiceImpl/closeAccountRequest", output = "http://server.soap.bank/BankServiceImpl/closeAccountResponse", fault = {
-        @FaultAction(className = IOException_Exception.class, value = "http://server.soap.bank/BankServiceImpl/closeAccount/Fault/IOException")
-    })
-    public boolean closeAccount(
-        @WebParam(name = "arg0", targetNamespace = "")
-        String arg0)
-        throws IOException_Exception
-    ;
-
-    /**
-     * 
-     * @return
-     *     returns java.util.List<java.lang.String>
-     * @throws IOException_Exception
-     */
-    @WebMethod
-    @WebResult(targetNamespace = "")
-    @RequestWrapper(localName = "getAccountNumbers", targetNamespace = "http://server.soap.bank/", className = "bank.soap.client.jaxws.GetAccountNumbers")
-    @ResponseWrapper(localName = "getAccountNumbersResponse", targetNamespace = "http://server.soap.bank/", className = "bank.soap.client.jaxws.GetAccountNumbersResponse")
-    @Action(input = "http://server.soap.bank/BankServiceImpl/getAccountNumbersRequest", output = "http://server.soap.bank/BankServiceImpl/getAccountNumbersResponse", fault = {
-        @FaultAction(className = IOException_Exception.class, value = "http://server.soap.bank/BankServiceImpl/getAccountNumbers/Fault/IOException")
-    })
-    public List<String> getAccountNumbers()
-        throws IOException_Exception
-    ;
-
-    /**
-     * 
-     * @param arg0
-     * @return
-     *     returns java.lang.String
-     * @throws IOException_Exception
-     */
-    @WebMethod
-    @WebResult(targetNamespace = "")
-    @RequestWrapper(localName = "getAccount", targetNamespace = "http://server.soap.bank/", className = "bank.soap.client.jaxws.GetAccount")
-    @ResponseWrapper(localName = "getAccountResponse", targetNamespace = "http://server.soap.bank/", className = "bank.soap.client.jaxws.GetAccountResponse")
-    @Action(input = "http://server.soap.bank/BankServiceImpl/getAccountRequest", output = "http://server.soap.bank/BankServiceImpl/getAccountResponse", fault = {
-        @FaultAction(className = IOException_Exception.class, value = "http://server.soap.bank/BankServiceImpl/getAccount/Fault/IOException")
-    })
-    public String getAccount(
-        @WebParam(name = "arg0", targetNamespace = "")
-        String arg0)
-        throws IOException_Exception
-    ;
-
-    /**
-     * 
-     * @param arg0
-     * @return
-     *     returns boolean
-     * @throws IOException_Exception
-     */
-    @WebMethod
-    @WebResult(targetNamespace = "")
     @RequestWrapper(localName = "isActive", targetNamespace = "http://server.soap.bank/", className = "bank.soap.client.jaxws.IsActive")
     @ResponseWrapper(localName = "isActiveResponse", targetNamespace = "http://server.soap.bank/", className = "bank.soap.client.jaxws.IsActiveResponse")
     @Action(input = "http://server.soap.bank/BankServiceImpl/isActiveRequest", output = "http://server.soap.bank/BankServiceImpl/isActiveResponse", fault = {
@@ -154,8 +154,8 @@ public interface BankServiceImpl {
      * 
      * @param arg1
      * @param arg0
-     * @throws InactiveException_Exception
      * @throws IOException_Exception
+     * @throws InactiveException_Exception
      */
     @WebMethod
     @RequestWrapper(localName = "deposit", targetNamespace = "http://server.soap.bank/", className = "bank.soap.client.jaxws.Deposit")
@@ -176,8 +176,8 @@ public interface BankServiceImpl {
      * 
      * @param arg1
      * @param arg0
-     * @throws InactiveException_Exception
      * @throws IOException_Exception
+     * @throws InactiveException_Exception
      * @throws OverdrawException_Exception
      */
     @WebMethod

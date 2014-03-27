@@ -30,8 +30,8 @@ public class BankServiceImpl implements BankService {
 	}
 
 	@Override
-	public String[] getAccountNumbers() throws IOException {
-		return (String[]) bank.getAccountNumbers().toArray();
+	public Object[] getAccountNumbers() throws IOException {
+		return bank.getAccountNumbers().toArray();
 	}
 
 	@Override

@@ -13,14 +13,14 @@ import javax.xml.bind.annotation.XmlType;
 public class GetAccountNumbersResponse {
 
     @XmlElement(name = "return", namespace = "", nillable = true)
-    private String[] _return;
+    private Object[] _return;
 
     /**
      * 
      * @return
-     *     returns String[]
+     *     returns Object[]
      */
-    public String[] getReturn() {
+    public Object[] getReturn() {
         return this._return;
     }
 
@@ -29,7 +29,7 @@ public class GetAccountNumbersResponse {
      * @param _return
      *     the value for the _return property
      */
-    public void setReturn(String[] _return) {
+    public void setReturn(Object[] _return) {
         this._return = _return;
     }
 

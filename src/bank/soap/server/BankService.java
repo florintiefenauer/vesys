@@ -14,7 +14,7 @@ public interface BankService {
 
 	boolean closeAccount(String number) throws IOException;
 
-	String[] getAccountNumbers() throws IOException;
+	Object[] getAccountNumbers() throws IOException;
 
 	String getAccount(String number) throws IOException;
 

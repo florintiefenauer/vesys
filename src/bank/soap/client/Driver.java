@@ -1,13 +1,6 @@
 package bank.soap.client;
 
-import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.ObjectInputStream;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.net.URLConnection;
-import java.net.URLEncoder;
 import java.net.UnknownHostException;
 import java.util.HashSet;
 import java.util.List;
@@ -57,15 +50,15 @@ public class Driver implements bank.BankDriver {
 
 		@Override
 		public Set<String> getAccountNumbers() throws IOException{			
-			List<String> strList = null;
+			List<Object> strList = null;
 			try {
 				strList = port.getAccountNumbers();
 			} catch (IOException_Exception e) {
 			    throw new IOException();
 			}
 			Set <String> strSet = new HashSet<String>();
-			for(String s : strList){
-				strSet.add(s);
+			for(Object s : strList){
+				strSet.add((String) s);
 			}
 			return strSet;		
 		}
