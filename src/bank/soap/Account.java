@@ -1,11 +1,21 @@
 package bank.soap;
 
 import java.io.IOException;
+import java.util.Date;
+
+import javax.jws.WebParam;
+import javax.jws.WebService;
 
 import bank.InactiveException;
 import bank.OverdrawException;
 
+@WebService
 public class Account implements AccountSoap {
+
+	@Override
+	public String sayHello(@WebParam(name = "name") String name) {
+		return "Hello " + name + " from SOAP at " + new Date();
+	}
 
 	@Override
 	public String getNumber() throws IOException {
