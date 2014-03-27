@@ -1,4 +1,4 @@
-package bank.soap;
+package bank.soap.server;
 
 import java.io.IOException;
 
@@ -17,7 +17,7 @@ public interface BankService {
 
 	boolean closeAccount(String number) throws IOException;
 
-	Object[] getAccountNumbers() throws IOException;
+	String[] getAccountNumbers() throws IOException;
 
 	String getAccount(String number) throws IOException;
 

@@ -10,8 +10,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
-import bank.Account;
-import bank.Bank;
+import bank.IAccount;
+import bank.IBank;
 import bank.BankDriver;
 
 /*
@@ -25,7 +25,7 @@ import bank.BankDriver;
 
 
 public class Driver implements BankDriver {
-	private Bank bank = null;
+	private IBank bank = null;
 
 	@Override
 	public void connect(String[] args){
@@ -40,13 +40,13 @@ public class Driver implements BankDriver {
 	}
 	
 	@Override
-	public bank.Bank getBank(){
+	public bank.IBank getBank(){
 		return bank;
 	}
 
 	/** This Dummy-Bank only contains one account. */
-	class DummyBank implements Bank  {
-		private final Map<String, Account> accounts = new HashMap<String, Account>();
+	class DummyBank implements IBank  {
+		private final Map<String, IAccount> accounts = new HashMap<String, IAccount>();
 		{
 			DummyAccount acc = new DummyAccount();
 			accounts.put(acc.getNumber(), acc);
@@ -68,18 +68,18 @@ public class Driver implements BankDriver {
 		}
 		
 		@Override
-		public Account  getAccount(String number){
+		public IAccount  getAccount(String number){
 			return accounts.get(number);
 		}
 		
 		@Override
-		public void transfer(Account a, Account b, double amount) {
+		public void transfer(IAccount a, IAccount b, double amount) {
 			// since this bank only supports one account, transfer always transfers amount
 			// from one to the same account, thus this empty implementation is correct!
 		}
 	}
 
-	class DummyAccount implements Account {
+	class DummyAccount implements IAccount {
 		private String owner = "Dagobert Duck";
 		private String number = "DD-33-4499";
 		private double balance;

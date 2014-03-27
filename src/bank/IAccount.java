@@ -13,11 +13,11 @@ import java.io.Serializable;
  * and withdraw money. The amounts are always given in Swiss Francs. References
  * to accounts can be obtained over a bank interface.
  * 
- * @see Bank
+ * @see IBank
  * @author Dominik Gruntz
  * @version 3.0
  */
-public interface Account{
+public interface IAccount{
 
 	/**
 	 * Returns the account number.

@@ -8,8 +8,8 @@ package bank.gui.tests;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
-import bank.Account;
-import bank.Bank;
+import bank.IAccount;
+import bank.IBank;
 
 public class EfficiencyTest implements BankTest {
 
@@ -28,8 +28,8 @@ public class EfficiencyTest implements BankTest {
 	}
 
 	@Override
-	public void runTests(JFrame context, Bank bank, String currentAccountNumber) throws Exception {
-		final Account acc = bank.getAccount(currentAccountNumber);
+	public void runTests(JFrame context, IBank bank, String currentAccountNumber) throws Exception {
+		final IAccount acc = bank.getAccount(currentAccountNumber);
 
 		String msg;
 		try {

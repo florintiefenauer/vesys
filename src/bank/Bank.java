@@ -1,91 +1,118 @@
-/*
- * Copyright (c) 2000-2014 Fachhochschule Nordwestschweiz (FHNW)
- * All Rights Reserved. 
- */
-
 package bank;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
-/**
- * The <code>Bank</code> interface describes the functionality of a bank. Using
- * this interface, new accounts can be created and existing accounts can be
- * closed.
- * 
- * @see Account
- * @author Dominik Gruntz
- * @version 3.0
- */
-public interface Bank {
 
-	/**
-	 * Creates a new account. As result, the method returns the account number
-	 * of the generated account or <code>null</code>, in case that the account
-	 * could not be generated. An owner may own several accounts.
-	 * 
-	 * @param owner
-	 *            name of the owner
-	 *            
-	 * @return account number of generated account or <code>null</code>, if the
-	 *         account could not be generated
-	 *         
-	 * @throws IOException
-	 *             if a remoting or communication problem occurs
-	 */
-	String createAccount(String owner) throws IOException;
+public class Bank implements IBank {
 
-	/**
-	 * Closes an account. Only accounts with balance zero may be closed.
-	 * Calling method <code>isActive</code> on a closed account will
-	 * return <code>false</code>. As result, the method returns whether the
-	 * account could be closed or not.
-	 * 
-	 * @param number
-	 *            number of the account to be closed
-	 *            
-	 * @return true, if the closing was successful, false otherwise
-	 * 
-	 * @throws IOException
-	 *             if a remoting or communication problem occurs
-	 */
-	boolean closeAccount(String number) throws IOException;
+		private final Map<String, Account> accounts = new HashMap<>();
 
-	/**
-	 * Returns a set of the account numbers (of type String) of all currently
-	 * active accounts.
-	 * 
-	 * @return set of account numbers of all active accounts
-	 * @throws IOException if a remoting or communication problem occurs
-	 */
-	Set<String> getAccountNumbers() throws IOException;
+		@Override
+		public Set<String> getAccountNumbers() {
+			Set<String> accNumbers = new HashSet<String>();
+			for (Account acc : accounts.values()) {
+				if (acc.isActive())
+					accNumbers.add(acc.getNumber());
+			}
+			return accNumbers;
+		}
 
-	/**
-	 * Returns a particular account given the account number. If the account
-	 * number is not valid, <code>null</code> is returned as result. The returned
-	 * account may be passive.
-	 * 
-	 * @param number number of the account
-	 * @return account with the account number as specified or <code>null</code>,
-	 *         if such an account was never created and does not exist.
-	 * @throws IOException if a remoting or communication problem occurs
-	 */
-	Account getAccount(String number) throws IOException;
+		@Override
+		public String createAccount(String owner) {
+			if (owner != null) {
 
-	/**
-	 * Transfers the given amount from account a to account b.
-	 * 
-	 * @param a account to withdraw amount from
-	 * @param b account to deposit amount
-	 * @param amount value to transfer
-	 * @pre amount >= 0
-	 * @throws InactiveException if one of the two accounts is not active
-	 * @throws OverdrawException if the amount is greater than the balance of
-	 *             account a
-	 * @throws IllegalArgumentException if the argument is negative
-	 * @throws IOException if a remoting or communication problem occurs
-	 */
-	void transfer(Account a, Account b, double amount)
-			throws IOException, IllegalArgumentException, OverdrawException,
-			InactiveException;
+				Account acc = new Account(owner);
+				String number = acc.getNumber();
+				accounts.put(number, acc);
+				return number;
+			}
+			return null;
+		}
+
+		@Override
+		public boolean closeAccount(String number) {
+			Account acc = accounts.get(number);
+			if (acc != null && acc.balance == 0 && acc.isActive()) {
+				acc.active = false;
+				return true;
+			}
+
+			return false;
+		}
+
+		@Override
+		public bank.IAccount getAccount(String number) {
+			return accounts.get(number);
+		}
+
+		@Override
+		public void transfer(bank.IAccount from, bank.IAccount to, double amount)
+				throws IOException, InactiveException, OverdrawException,
+				IllegalArgumentException {
+			from.withdraw(amount);
+			to.deposit(amount);
+		}
+		
+		public static class Account implements IAccount {
+
+			private final String number;
+			private final String owner;
+			private double balance;
+			private boolean active = true;
+			private static int count = 0;
+
+			Account(String owner) {
+				this.owner = owner;
+				count++;
+				this.number = owner.substring(0, 1) + "-" + count;
+				active = true;
+			}
+
+			@Override
+			public double getBalance() {
+				return balance;
+			}
+
+			@Override
+			public String getOwner() {
+				return owner;
+			}
+
+			@Override
+			public String getNumber() {
+				return number;
+			}
+
+			@Override
+			public boolean isActive() {
+				return active;
+			}
+
+			@Override
+			public void deposit(double amount) throws InactiveException {
+				if (!isActive()) {
+					throw new InactiveException();
+				}
+				if (amount < 0)
+					throw new IllegalArgumentException();
+				balance += amount;
+			}
+
+			@Override
+			public void withdraw(double amount) throws InactiveException,
+					OverdrawException {
+				if (!isActive())
+					throw new InactiveException();
+				if (amount < 0)
+					throw new IllegalArgumentException();
+				if ((balance - amount) < 0)
+					throw new OverdrawException();
+				balance -= amount;
+			}
+	}
+
 }

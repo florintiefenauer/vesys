@@ -11,7 +11,7 @@ import java.io.IOException;
  * The BankDriver interface is used to access a particular bank. The client
  * program first calls connect over this interface and then requests the bank.
  * 
- * @see Bank
+ * @see IBank
  * @author Dominik Gruntz
  * @version 3.0
  */
@@ -42,7 +42,7 @@ public interface BankDriver {
 	 * disconnect has been called getBank returns null.
 	 * 
 	 * @see #connect
-	 * @see Bank
+	 * @see IBank
 	 */
-	Bank getBank();
+	IBank getBank();
 }

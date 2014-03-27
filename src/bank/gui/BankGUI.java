@@ -47,8 +47,8 @@ import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 
-import bank.Account;
-import bank.Bank;
+import bank.IAccount;
+import bank.IBank;
 import bank.BankDriver;
 import bank.BankDriver2;
 import bank.InactiveException;
@@ -59,10 +59,10 @@ import bank.gui.tests.BankTest;
 public class BankGUI extends JFrame {
 
 	private BankDriver driver;
-	private Bank bank;
+	private IBank bank;
 
 	private JComboBox<String> accountcombo = new JComboBox<String>();
-	private Map<String, Account> accounts = new HashMap<String,Account>();
+	private Map<String, IAccount> accounts = new HashMap<String,IAccount>();
 
 	private JTextField fld_owner   = new JTextField();
 	private JTextField fld_balance = new JTextField();
@@ -316,7 +316,7 @@ public class BankGUI extends JFrame {
 			}
 			else {
 				try {
-					Account acc = bank.getAccount(number);
+					IAccount acc = bank.getAccount(number);
 					accounts.put(number, acc);
 
 					String str = addaccount.getBalance().trim();
@@ -380,7 +380,7 @@ public class BankGUI extends JFrame {
 		    if (s!=null) {
 			    try  {
 					double amount = Double.parseDouble(s);
-					Account a = accounts.get(number);
+					IAccount a = accounts.get(number);
 					a.deposit(amount);
 					fld_balance.setText(currencyFormat(a.getBalance()));
 			    }
@@ -411,7 +411,7 @@ public class BankGUI extends JFrame {
 	    	if (s!=null) {
 		    	try {
 					double amount = Double.parseDouble(s);
-					Account a = accounts.get(number);
+					IAccount a = accounts.get(number);
 					a.withdraw(amount);
 	    			fld_balance.setText(currencyFormat(a.getBalance()));
 		    	}
@@ -460,8 +460,8 @@ public class BankGUI extends JFrame {
 			    	else {
 						try {
 							double amount = Double.parseDouble(trans.getBalance());
-							Account from = accounts.get(number);
-							Account to   = accounts.get(trans.getAccountNumber());
+							IAccount from = accounts.get(number);
+							IAccount to   = accounts.get(trans.getAccountNumber());
 							bank.transfer(from, to, amount);
 							
 							// after transfer adjust value of displayed account
@@ -554,7 +554,7 @@ public class BankGUI extends JFrame {
 		String nr = currentAccountNumber();
 		try{
 			if(nr != null){
-				Account a = accounts.get(nr);
+				IAccount a = accounts.get(nr);
 				if(a != null){
 					fld_owner.setText(a.getOwner());
 					fld_balance.setText(currencyFormat(a.getBalance()));

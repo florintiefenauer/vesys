@@ -1,9 +1,11 @@
-package bank.soap;
+package bank.soap.server;
 
 import java.io.IOException;
 
+import bank.Bank;
 import bank.InactiveException;
 import bank.OverdrawException;
+
 
 public class BankServiceImpl implements BankService {
 
@@ -64,7 +66,7 @@ public class BankServiceImpl implements BankService {
 	@Override
 	public String getOwner(String number) throws IOException {
 		System.out.println("Get owner " + number);
-		bank.Account acc = this.bank.getAccount(number);
+		bank.IAccount acc = this.bank.getAccount(number);
 		if (acc != null)
 			return acc.getOwner();
 		else

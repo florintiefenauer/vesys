@@ -43,7 +43,7 @@ public class Driver implements bank.BankDriver {
 		return bank;
 	}
 
-	static class Bank implements bank.Bank {
+	static class Bank implements bank.IBank {
 
 		Socket socket = null;
 		DataOutputStream out = null;
@@ -101,7 +101,7 @@ public class Driver implements bank.BankDriver {
 		}
 
 		@Override
-		public bank.Account getAccount(String number) throws IOException {
+		public bank.IAccount getAccount(String number) throws IOException {
 			out.writeUTF("getAccount");
 			out.writeUTF(number);
 			Object inObj = null;
@@ -118,7 +118,7 @@ public class Driver implements bank.BankDriver {
 		}
 
 		@Override
-		public void transfer(bank.Account from, bank.Account to, double amount)
+		public void transfer(bank.IAccount from, bank.IAccount to, double amount)
 				throws IOException, InactiveException, OverdrawException {
 			out.writeUTF("transfer");
 			out.writeUTF(from.getNumber());
@@ -143,7 +143,7 @@ public class Driver implements bank.BankDriver {
 
 	}
 
-	static class Account implements bank.Account {
+	static class Account implements bank.IAccount {
 
 		private String number;
 		private String owner;

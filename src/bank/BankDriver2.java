@@ -12,7 +12,7 @@ import java.io.IOException;
  * The BankDriver2 interface allows the client to register a listener which
  * informs the client about changes.
  * 
- * @see Bank
+ * @see IBank
  * @author Dominik Gruntz
  * @version 3.0
  */

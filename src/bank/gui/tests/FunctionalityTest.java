@@ -11,8 +11,8 @@ import java.util.Set;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
-import bank.Account;
-import bank.Bank;
+import bank.IAccount;
+import bank.IBank;
 import bank.InactiveException;
 
 public class FunctionalityTest implements BankTest {
@@ -28,8 +28,8 @@ public class FunctionalityTest implements BankTest {
 	}
 
 	@Override
-	public void runTests(JFrame context, final Bank bank, String currentAccountNumber) throws Exception {
-		final Account acc = bank.getAccount(currentAccountNumber);
+	public void runTests(JFrame context, final IBank bank, String currentAccountNumber) throws Exception {
+		final IAccount acc = bank.getAccount(currentAccountNumber);
 
 		String msg = null;
 
@@ -47,7 +47,7 @@ public class FunctionalityTest implements BankTest {
 		// After closing a deposit on the closed account has to throw an exception
 		if(msg == null){
 			String nr = bank.createAccount("TestUser");
-			Account a = bank.getAccount(nr);
+			IAccount a = bank.getAccount(nr);
 			bank.closeAccount(nr);
 
 			try {
@@ -86,8 +86,8 @@ public class FunctionalityTest implements BankTest {
 		if(msg == null){
 			String  n1 = currentAccountNumber;
 			String  n2 = bank.createAccount("Account2");
-			Account a1 = bank.getAccount(n1);
-			Account a2 = bank.getAccount(n2);
+			IAccount a1 = bank.getAccount(n1);
+			IAccount a2 = bank.getAccount(n2);
 			double a1Balance = a1.getBalance();
 			double a2Balance = a2.getBalance();
 			a1.withdraw(a1Balance);
@@ -121,7 +121,7 @@ public class FunctionalityTest implements BankTest {
 		// can an account with positive balance be closed?
 		if(msg == null) {
 			String  n = bank.createAccount("Account4");
-			Account a = bank.getAccount(n);
+			IAccount a = bank.getAccount(n);
 			a.deposit(100);
 			boolean done = bank.closeAccount(n);
 			if(done) {
@@ -159,7 +159,7 @@ public class FunctionalityTest implements BankTest {
 		// are arbitrary names supported
 		if(msg == null) {
 			String name, id;
-			Account a;
+			IAccount a;
 			name = "Hans Muster";
 			id = bank.createAccount(name);
 			a = bank.getAccount(id);
@@ -199,7 +199,7 @@ public class FunctionalityTest implements BankTest {
 		
 		if(msg == null){
 			String n = bank.createAccount("Account6");
-			Account a = bank.getAccount(n);
+			IAccount a = bank.getAccount(n);
 			bank.closeAccount(n);
 			try {
 				double balance = a.getBalance();
@@ -212,7 +212,7 @@ public class FunctionalityTest implements BankTest {
 		}
 		
 		if(msg == null) {
-			Account a = bank.getAccount(""); // assume that this is not a valid number
+			IAccount a = bank.getAccount(""); // assume that this is not a valid number
 			if(a != null) {
 				msg = "method getAccount must return null if the account does not exist";
 			}
@@ -236,7 +236,7 @@ public class FunctionalityTest implements BankTest {
 				}
 			}
 			if(msg == null) {
-				Account a = bank.getAccount(a2);
+				IAccount a = bank.getAccount(a2);
 				if(a == null) {
 					msg = "method getAccount must return all created accounts,\n" +
 							"even if they are closed.";
@@ -248,7 +248,7 @@ public class FunctionalityTest implements BankTest {
 		
 		if(msg == null) {
 			try {
-				Account a = bank.getAccount("xxx");
+				IAccount a = bank.getAccount("xxx");
 				if(a != null) {
 					msg = "if bank.getAccount is called with an invalid account number then null must be returned.";
 				}
@@ -278,8 +278,8 @@ public class FunctionalityTest implements BankTest {
 		if(msg == null) {
 			try {
 				String id = bank.createAccount("a6");
-				Account a1 = bank.getAccount(id);
-				Account a2 = bank.getAccount(id);
+				IAccount a1 = bank.getAccount(id);
+				IAccount a2 = bank.getAccount(id);
 				a1.deposit(100);
 				if(a2.getBalance() != 100) {
 					msg = "if an account is accessed twice with getAccount(id), and if on the first reference\n" +
