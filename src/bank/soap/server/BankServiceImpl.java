@@ -36,6 +36,7 @@ public class BankServiceImpl implements BankService {
 
 	@Override
 	public String getAccount(String number) throws IOException {
+		if(number == null) throw new IllegalArgumentException();
 		return bank.getAccount(number).getOwner();
 	}
 

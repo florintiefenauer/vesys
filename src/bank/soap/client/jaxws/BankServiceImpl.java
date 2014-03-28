@@ -31,9 +31,9 @@ public interface BankServiceImpl {
      * @param arg2
      * @param arg1
      * @param arg0
-     * @throws IOException_Exception
      * @throws InactiveException_Exception
      * @throws OverdrawException_Exception
+     * @throws IOException_Exception
      */
     @WebMethod
     @RequestWrapper(localName = "transfer", targetNamespace = "http://server.soap.bank/", className = "bank.soap.client.jaxws.Transfer")
@@ -57,17 +57,17 @@ public interface BankServiceImpl {
      * 
      * @param arg0
      * @return
-     *     returns boolean
+     *     returns java.lang.String
      * @throws IOException_Exception
      */
     @WebMethod
     @WebResult(targetNamespace = "")
-    @RequestWrapper(localName = "closeAccount", targetNamespace = "http://server.soap.bank/", className = "bank.soap.client.jaxws.CloseAccount")
-    @ResponseWrapper(localName = "closeAccountResponse", targetNamespace = "http://server.soap.bank/", className = "bank.soap.client.jaxws.CloseAccountResponse")
-    @Action(input = "http://server.soap.bank/BankServiceImpl/closeAccountRequest", output = "http://server.soap.bank/BankServiceImpl/closeAccountResponse", fault = {
-        @FaultAction(className = IOException_Exception.class, value = "http://server.soap.bank/BankServiceImpl/closeAccount/Fault/IOException")
+    @RequestWrapper(localName = "createAccount", targetNamespace = "http://server.soap.bank/", className = "bank.soap.client.jaxws.CreateAccount")
+    @ResponseWrapper(localName = "createAccountResponse", targetNamespace = "http://server.soap.bank/", className = "bank.soap.client.jaxws.CreateAccountResponse")
+    @Action(input = "http://server.soap.bank/BankServiceImpl/createAccountRequest", output = "http://server.soap.bank/BankServiceImpl/createAccountResponse", fault = {
+        @FaultAction(className = IOException_Exception.class, value = "http://server.soap.bank/BankServiceImpl/createAccount/Fault/IOException")
     })
-    public boolean closeAccount(
+    public String createAccount(
         @WebParam(name = "arg0", targetNamespace = "")
         String arg0)
         throws IOException_Exception
@@ -94,17 +94,17 @@ public interface BankServiceImpl {
      * 
      * @param arg0
      * @return
-     *     returns java.lang.String
+     *     returns boolean
      * @throws IOException_Exception
      */
     @WebMethod
     @WebResult(targetNamespace = "")
-    @RequestWrapper(localName = "getAccount", targetNamespace = "http://server.soap.bank/", className = "bank.soap.client.jaxws.GetAccount")
-    @ResponseWrapper(localName = "getAccountResponse", targetNamespace = "http://server.soap.bank/", className = "bank.soap.client.jaxws.GetAccountResponse")
-    @Action(input = "http://server.soap.bank/BankServiceImpl/getAccountRequest", output = "http://server.soap.bank/BankServiceImpl/getAccountResponse", fault = {
-        @FaultAction(className = IOException_Exception.class, value = "http://server.soap.bank/BankServiceImpl/getAccount/Fault/IOException")
+    @RequestWrapper(localName = "closeAccount", targetNamespace = "http://server.soap.bank/", className = "bank.soap.client.jaxws.CloseAccount")
+    @ResponseWrapper(localName = "closeAccountResponse", targetNamespace = "http://server.soap.bank/", className = "bank.soap.client.jaxws.CloseAccountResponse")
+    @Action(input = "http://server.soap.bank/BankServiceImpl/closeAccountRequest", output = "http://server.soap.bank/BankServiceImpl/closeAccountResponse", fault = {
+        @FaultAction(className = IOException_Exception.class, value = "http://server.soap.bank/BankServiceImpl/closeAccount/Fault/IOException")
     })
-    public String getAccount(
+    public boolean closeAccount(
         @WebParam(name = "arg0", targetNamespace = "")
         String arg0)
         throws IOException_Exception
@@ -119,12 +119,12 @@ public interface BankServiceImpl {
      */
     @WebMethod
     @WebResult(targetNamespace = "")
-    @RequestWrapper(localName = "createAccount", targetNamespace = "http://server.soap.bank/", className = "bank.soap.client.jaxws.CreateAccount")
-    @ResponseWrapper(localName = "createAccountResponse", targetNamespace = "http://server.soap.bank/", className = "bank.soap.client.jaxws.CreateAccountResponse")
-    @Action(input = "http://server.soap.bank/BankServiceImpl/createAccountRequest", output = "http://server.soap.bank/BankServiceImpl/createAccountResponse", fault = {
-        @FaultAction(className = IOException_Exception.class, value = "http://server.soap.bank/BankServiceImpl/createAccount/Fault/IOException")
+    @RequestWrapper(localName = "getAccount", targetNamespace = "http://server.soap.bank/", className = "bank.soap.client.jaxws.GetAccount")
+    @ResponseWrapper(localName = "getAccountResponse", targetNamespace = "http://server.soap.bank/", className = "bank.soap.client.jaxws.GetAccountResponse")
+    @Action(input = "http://server.soap.bank/BankServiceImpl/getAccountRequest", output = "http://server.soap.bank/BankServiceImpl/getAccountResponse", fault = {
+        @FaultAction(className = IOException_Exception.class, value = "http://server.soap.bank/BankServiceImpl/getAccount/Fault/IOException")
     })
-    public String createAccount(
+    public String getAccount(
         @WebParam(name = "arg0", targetNamespace = "")
         String arg0)
         throws IOException_Exception
@@ -154,8 +154,8 @@ public interface BankServiceImpl {
      * 
      * @param arg1
      * @param arg0
-     * @throws IOException_Exception
      * @throws InactiveException_Exception
+     * @throws IOException_Exception
      */
     @WebMethod
     @RequestWrapper(localName = "deposit", targetNamespace = "http://server.soap.bank/", className = "bank.soap.client.jaxws.Deposit")
@@ -176,9 +176,9 @@ public interface BankServiceImpl {
      * 
      * @param arg1
      * @param arg0
-     * @throws IOException_Exception
      * @throws InactiveException_Exception
      * @throws OverdrawException_Exception
+     * @throws IOException_Exception
      */
     @WebMethod
     @RequestWrapper(localName = "withdraw", targetNamespace = "http://server.soap.bank/", className = "bank.soap.client.jaxws.Withdraw")
