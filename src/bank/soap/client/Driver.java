@@ -26,7 +26,7 @@ public class Driver implements bank.BankDriver {
 		 service = new BankServiceImplService();
 		 port = service.getBankServiceImplPort();
 		
-		bank = new Bank(port);
+		 bank = new Bank(port);
 	}
 
 	@Override
