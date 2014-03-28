@@ -83,11 +83,16 @@ public class Driver implements bank.BankDriver {
 
 		@Override
 		public bank.IAccount getAccount(String number) throws IOException {
+			String owner = null;
 			try {
-				return new Account (number, port.getAccount(number), port);
+				owner = port.getAccount(number);				
 			} catch (IOException_Exception e) {
 				throw new IOException();
 			}
+			if(owner!=null){
+				return new Account (number,owner , port);
+			}
+			return null;
 		}
 
 		@Override

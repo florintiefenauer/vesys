@@ -31,9 +31,9 @@ public interface BankServiceImpl {
      * @param arg2
      * @param arg1
      * @param arg0
-     * @throws InactiveException_Exception
      * @throws OverdrawException_Exception
      * @throws IOException_Exception
+     * @throws InactiveException_Exception
      */
     @WebMethod
     @RequestWrapper(localName = "transfer", targetNamespace = "http://server.soap.bank/", className = "bank.soap.client.jaxws.Transfer")
@@ -154,8 +154,8 @@ public interface BankServiceImpl {
      * 
      * @param arg1
      * @param arg0
-     * @throws InactiveException_Exception
      * @throws IOException_Exception
+     * @throws InactiveException_Exception
      */
     @WebMethod
     @RequestWrapper(localName = "deposit", targetNamespace = "http://server.soap.bank/", className = "bank.soap.client.jaxws.Deposit")
@@ -176,9 +176,9 @@ public interface BankServiceImpl {
      * 
      * @param arg1
      * @param arg0
-     * @throws InactiveException_Exception
      * @throws OverdrawException_Exception
      * @throws IOException_Exception
+     * @throws InactiveException_Exception
      */
     @WebMethod
     @RequestWrapper(localName = "withdraw", targetNamespace = "http://server.soap.bank/", className = "bank.soap.client.jaxws.Withdraw")
