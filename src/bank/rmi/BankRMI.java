@@ -17,35 +17,31 @@ public class BankRMI extends java.rmi.server.UnicastRemoteObject implements IBan
 	}
 	
 	@Override
-	public String createAccount(String owner) throws IOException {
-		// TODO Auto-generated method stub
-		return null;
+	public String createAccount(String owner) throws IOException {		
+		return bank.createAccount(owner);
 	}
 
 	@Override
 	public boolean closeAccount(String number) throws IOException {
-		// TODO Auto-generated method stub
-		return false;
+		return bank.closeAccount(number);
 	}
 
 	@Override
 	public Set<String> getAccountNumbers() throws IOException {
-		// TODO Auto-generated method stub
-		return null;
+		return bank.getAccountNumbers();
 	}
 
 	@Override
 	public IAccount getAccount(String number) throws IOException {
-		// TODO Auto-generated method stub
-		return null;
+		return bank.getAccount(number);
 	}
 
 	@Override
 	public void transfer(IAccount a, IAccount b, double amount)
 			throws IOException, IllegalArgumentException, OverdrawException,
 			InactiveException {
-		// TODO Auto-generated method stub
-		
+		bank.transfer(a, b, amount);
+	
 	}
 
 }
