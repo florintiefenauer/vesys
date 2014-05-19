@@ -3,14 +3,17 @@ package bank.rmi;
 import java.io.IOException;
 import java.rmi.Naming;
 import java.rmi.NotBoundException;
+import java.util.LinkedList;
 
 import bank.BankDriver;
+import bank.BankDriver2;
 import bank.IBank;
 
-public class Driver implements BankDriver {
+public class Driver implements BankDriver2 {
 
 	private String server = "localhost";
 	private IBankRMI bank;
+
 	@Override
 	public void connect(String[] args) throws IOException {
 		if (args.length > 0) { 
@@ -33,6 +36,11 @@ public class Driver implements BankDriver {
 	@Override
 	public IBank getBank() {
 		return bank;
+	}
+
+	@Override
+	public void registerUpdateHandler(UpdateHandler handler) throws IOException {
+		bank.registerUpdateHandler(new RMIUpdateHandler(handler));
 	}
 
 }
