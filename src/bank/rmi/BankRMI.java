@@ -13,6 +13,7 @@ public class BankRMI extends java.rmi.server.UnicastRemoteObject implements IBan
 	private Bank bank;
 	
 	public BankRMI() throws java.rmi.RemoteException {
+		super();
 		bank = new Bank();
 	}
 	
@@ -32,8 +33,12 @@ public class BankRMI extends java.rmi.server.UnicastRemoteObject implements IBan
 	}
 
 	@Override
-	public IAccount getAccount(String number) throws IOException {
-		return bank.getAccount(number);
+	public IAccountRMI getAccount(String number) throws IOException {
+		IAccount account = bank.getAccount(number);
+		if (account != null) {
+			return new AccountRMI(account);
+		}
+		return null;
 	}
 
 	@Override

@@ -5,9 +5,11 @@
 
 package bank.local;
 
+import java.io.IOException;
+
 import bank.Bank;
 
-public class Driver implements bank.BankDriver {
+public class Driver implements bank.BankDriver2 {
 	private Bank bank = null;
 
 	@Override
@@ -25,6 +27,12 @@ public class Driver implements bank.BankDriver {
 	@Override
 	public Bank getBank() {
 		return bank;
+	}
+
+	@Override
+	public void registerUpdateHandler(UpdateHandler handler) throws IOException {
+		// TODO Auto-generated method stub
+		
 	}
 
 }
