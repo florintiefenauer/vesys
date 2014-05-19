@@ -20,7 +20,7 @@ public class BankServiceImpl implements BankService {
 	}
 
 	@Override
-	public String createAccount(String owner) throws IOException {
+	public String createAccount(String owner) throws IOException, IllegalArgumentException {
 		return bank.createAccount(owner);
 	}
 
