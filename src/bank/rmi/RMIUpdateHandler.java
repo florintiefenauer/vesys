@@ -13,6 +13,7 @@ public class RMIUpdateHandler extends UnicastRemoteObject implements IRMIUpdateH
 	public RMIUpdateHandler(BankDriver2.UpdateHandler handler) throws RemoteException{
 		this.handler = handler;
 	}
+	
 	@Override
 	public void accountChanged(String id) throws IOException {
 		handler.accountChanged(id);		

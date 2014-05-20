@@ -5,7 +5,6 @@ import java.util.LinkedList;
 import java.util.Set;
 
 import bank.Bank;
-import bank.BankDriver2;
 import bank.IAccount;
 import bank.InactiveException;
 import bank.OverdrawException;
