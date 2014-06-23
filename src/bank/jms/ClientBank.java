@@ -15,6 +15,8 @@ import bank.IAccount;
 import bank.IBank;
 import bank.InactiveException;
 import bank.OverdrawException;
+import bank.jms.request.CreateAccountRequest;
+import bank.jms.request.Request;
 
 public class ClientBank implements IBank{
 	
@@ -24,31 +26,20 @@ public class ClientBank implements IBank{
 	private JMSProducer sender;
 	private JMSConsumer receiver;
 	
-	public ClientBank(JMSContext sender, Queue queue){
+	public ClientBank(JMSContext context, Queue queue){
 		this.context = context;
 		this.queue = queue;
 		
 		tempQueue = context.createTemporaryQueue();
-		sender = (JMSContext) context.createProducer().setJMSReplyTo(tempQueue);
+		sender = context.createProducer().setJMSReplyTo(tempQueue);
 		receiver = context.createConsumer(tempQueue);	
 	}
 
 	@Override
 	public String createAccount(String owner) throws IOException {		
-		String accNr = null;
-		sender.send(queue, "createAccount");
-		sender.send(queue, owner);
-		Message msg = receiver.receive();
-		try {
-			if(msg.getBooleanProperty("isException")){
-				throw msg.getBody(Exception.class);
-			} else{
-				accNr = msg.getBody(String.class);
-			}	
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return accNr;
+		sender.send(queue, new CreateAccountRequest(owner));
+		CreateAccountRequest r = receiver.receiveBody(CreateAccountRequest.class);
+		return r.getAccNr();
 	}
 
 	@Override

@@ -49,10 +49,10 @@ public class Server {
 			
 			System.out.println("JMS server is running...");
 			while (true) {
-			ObjectMessage msg = (ObjectMessage) consumer.receive();			
-			Request r = msg.getBody(Request.class);
-			r.handleRequest(bank);
-			producer.send(msg.getJMSReplyTo(), r);
+				ObjectMessage msg = (ObjectMessage) consumer.receive();			
+				Request r = msg.getBody(Request.class);
+				r.handleRequest(bank);
+				producer.send(msg.getJMSReplyTo(), r);
 			}
 		}
 	
