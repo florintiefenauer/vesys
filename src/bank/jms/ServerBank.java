@@ -72,34 +72,31 @@ public class ServerBank implements IBank {
 
 		@Override
 		public String getOwner() throws IOException {
-			// TODO Auto-generated method stub
-			return null;
+			return acc.getOwner();
 		}
 
 		@Override
 		public boolean isActive() throws IOException {
-			// TODO Auto-generated method stub
-			return false;
+			return acc.isActive();
 		}
 
 		@Override
 		public void deposit(double amount) throws IOException,
 				IllegalArgumentException, InactiveException {
-			// TODO Auto-generated method stub
-
+			acc.deposit(amount); 
+			handler.accountChanged(acc.getNumber());
 		}
 
 		@Override
 		public void withdraw(double amount) throws IOException,
 				IllegalArgumentException, OverdrawException, InactiveException {
-			// TODO Auto-generated method stub
-
+			acc.withdraw(amount); 
+			handler.accountChanged(acc.getNumber());
 		}
 
 		@Override
 		public double getBalance() throws IOException {
-			// TODO Auto-generated method stub
-			return 0;
+			return acc.getBalance();
 		}
 
 	}
