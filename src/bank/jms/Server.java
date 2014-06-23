@@ -7,6 +7,7 @@ import javax.jms.DeliveryMode;
 import javax.jms.JMSConsumer;
 import javax.jms.JMSContext;
 import javax.jms.JMSProducer;
+import javax.jms.Message;
 import javax.jms.ObjectMessage;
 import javax.jms.Queue;
 import javax.jms.Topic;
@@ -44,15 +45,12 @@ public class Server {
 			
 			System.out.println("JMS server is running...");
 			while (true) {
-			ObjectMessage msg = (ObjectMessage) consumer.receive();
-			//Request r = msg.getBody(Request.class);
-			//r.handleRequest(bank);
-			//producer.send(msg.getJMSReplyTo(), r);
+			ObjectMessage msg = (ObjectMessage) consumer.receive();			
+			String str = msg.getBody(String.class);
+			r.handleRequest(bank);
+			producer.send(msg.getJMSReplyTo(), r);
 			}
 		}
-		
-
-		
-
+	
 	}
 }
