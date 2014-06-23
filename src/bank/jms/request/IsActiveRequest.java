@@ -24,8 +24,6 @@ public class IsActiveRequest extends Request {
 			IAccount a = b.getAccount(this.number);
 			if(a != null){
 				this.active = a.isActive();
-			} else {
-				this.setException(new IllegalArgumentException("account number is invalid"));
 			}
 		} catch (IOException e) {
 			throw new RuntimeException(e);
