@@ -68,7 +68,12 @@ public class ClientBank implements IBank{
 	public IAccount getAccount(String number) throws IOException {
 		sender.send(queue, new GetAccountRequest(number));
 		GetAccountRequest r = receiver.receiveBody(GetAccountRequest.class);
-		return new ClientAccount(number,r.getOwner(),sender,receiver, queue);
+		String owner = r.getOwner();
+		if (owner == null){
+			return null;
+		} else{
+			return new ClientAccount(number,r.getOwner(),sender,receiver, queue);
+		}	
 	}
 
 	@Override

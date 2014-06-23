@@ -2,6 +2,7 @@ package bank.jms.request;
 
 import java.io.IOException;
 
+import bank.IAccount;
 import bank.IBank;
 
 public class GetAccountRequest extends Request{
@@ -20,7 +21,10 @@ public class GetAccountRequest extends Request{
 	@Override
 	public void handleRequest(IBank b) {
 		try {
-			owner = b.getAccount(number).getOwner();
+			IAccount a = b.getAccount(this.number);
+			if(a != null){
+				this.owner = a.getOwner();
+			}
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}
