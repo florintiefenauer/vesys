@@ -22,7 +22,10 @@ import bank.IBank;
 public class Driver implements BankDriver2 {
 
 	private List<UpdateHandler> listeners = new LinkedList<UpdateHandler>();
-
+	private JMSContext requestContext;
+	private JMSContext listenerContext;
+	private ClientBank bank;
+	
 	@Override
 	public void connect(String[] args) throws IOException {
 		try {
@@ -30,14 +33,16 @@ public class Driver implements BankDriver2 {
 
 			ConnectionFactory factory = (ConnectionFactory) jndiContext
 					.lookup("ConnectionFactory");
-			Queue queue = (Queue) jndiContext.lookup("BANK");
-
 			
+			requestContext = factory.createContext();
+			Queue queue = (Queue) jndiContext.lookup("BANK");
+			bank = new ClientBank(requestContext, queue);
+			
+			listenerContext = factory.createContext();
 			Topic topic = (Topic) jndiContext.lookup("BANK.LISTENER");
+			
 
-			JMSContext context = factory.createContext();
-
-			JMSConsumer consumer = context.createConsumer(topic);
+			JMSConsumer consumer = listenerContext.createConsumer(topic);
 			consumer.setMessageListener(new MessageListener() {
 				@Override
 				public void onMessage(Message msg) {
@@ -53,26 +58,27 @@ public class Driver implements BankDriver2 {
 					} catch (JMSException e1) {
 						e1.printStackTrace();
 					}
-
 				}
-
 			});
 
 		} catch (NamingException e) {
 			e.printStackTrace();
 		}
+		System.out.println("Connected...");
 	}
 
 	@Override
 	public void disconnect() throws IOException {
-		// TODO Auto-generated method stub
+		requestContext.close();
+		listenerContext.close();
+		bank = null;
+		System.out.println("Disconnected...");
 
 	}
 
 	@Override
 	public IBank getBank() {
-		// TODO Auto-generated method stub
-		return null;
+		return this.bank;
 	}
 
 	@Override

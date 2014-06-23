@@ -3,13 +3,24 @@ package bank.jms;
 import java.io.IOException;
 import java.util.Set;
 
+import bank.Bank;
+import bank.BankDriver2;
 import bank.IAccount;
 import bank.IBank;
 import bank.InactiveException;
 import bank.OverdrawException;
 
-public class BankJMS implements IBank{
+public class ServerBank implements IBank{
 
+	IBank bank;
+	BankDriver2.UpdateHandler handler;
+	
+	public ServerBank(IBank bank, BankDriver2.UpdateHandler handler){
+		this.bank = bank;
+		this.handler = handler;
+		
+	}
+	
 	@Override
 	public String createAccount(String owner) throws IOException {
 		// TODO Auto-generated method stub
