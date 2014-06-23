@@ -3,9 +3,7 @@ package bank.rmi;
 import java.io.IOException;
 import java.rmi.Naming;
 import java.rmi.NotBoundException;
-import java.util.LinkedList;
 
-import bank.BankDriver;
 import bank.BankDriver2;
 import bank.IBank;
 
