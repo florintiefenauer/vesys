@@ -16,6 +16,7 @@ import bank.IBank;
 import bank.InactiveException;
 import bank.OverdrawException;
 import bank.jms.request.CreateAccountRequest;
+import bank.jms.request.IsActiveRequest;
 import bank.jms.request.Request;
 
 public class ClientBank implements IBank{
@@ -65,6 +66,64 @@ public class ClientBank implements IBank{
 			throws IOException, IllegalArgumentException, OverdrawException,
 			InactiveException {
 		// TODO Auto-generated method stub
+		
+	}
+	
+	public class ClientAccount implements IAccount{
+		
+		private String number;
+		private String owner;
+		private JMSProducer sender;
+		private JMSConsumer receiver;
+		private Queue queue;
+		
+		public ClientAccount(String number, String owner, JMSProducer sender, JMSConsumer receiver, Queue queue){
+			this.number =number;
+			this.owner = owner;
+			this.sender = sender;
+			this.receiver = receiver;
+			this.queue = queue;
+			
+		}
+
+		@Override
+		public String getNumber() throws IOException {
+			return number;
+		}
+
+		@Override
+		public String getOwner() throws IOException {
+			return owner;
+		}
+
+		@Override
+		public boolean isActive() throws IOException {
+			sender.send(queue, new IsActiveRequest(number));
+			IsActiveRequest r = receiver.receiveBody(IsActiveRequest.class);
+			Exception exc = r.getException();
+			if(exc != null) exc.printStackTrace();
+			return r.isActive();
+		}
+
+		@Override
+		public void deposit(double amount) throws IOException,
+				IllegalArgumentException, InactiveException {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void withdraw(double amount) throws IOException,
+				IllegalArgumentException, OverdrawException, InactiveException {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public double getBalance() throws IOException {
+			// TODO Auto-generated method stub
+			return 0;
+		}
 		
 	}
 
