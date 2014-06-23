@@ -17,6 +17,7 @@ import javax.naming.InitialContext;
 import bank.Bank;
 import bank.BankDriver2;
 import bank.IBank;
+import bank.jms.request.Request;
 
 public class Server {
 
@@ -31,6 +32,9 @@ public class Server {
 
 		try (JMSContext context = factory.createContext()) {
 			JMSConsumer consumer = context.createConsumer(queue);
+			final JMSProducer producer = context.createProducer()
+					.setDeliveryMode(deliveryMode);
+			
 			final JMSProducer topicProducer = context.createProducer()
 					.setDeliveryMode(deliveryMode).setTimeToLive(10_000);
 
@@ -46,7 +50,7 @@ public class Server {
 			System.out.println("JMS server is running...");
 			while (true) {
 			ObjectMessage msg = (ObjectMessage) consumer.receive();			
-			String str = msg.getBody(String.class);
+			Request r = msg.getBody(Request.class);
 			r.handleRequest(bank);
 			producer.send(msg.getJMSReplyTo(), r);
 			}
