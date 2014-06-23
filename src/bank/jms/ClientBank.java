@@ -15,9 +15,16 @@ import bank.IAccount;
 import bank.IBank;
 import bank.InactiveException;
 import bank.OverdrawException;
+import bank.jms.request.CloseAccountRequest;
 import bank.jms.request.CreateAccountRequest;
+import bank.jms.request.DepositRequest;
+import bank.jms.request.GetAccountNumbersRequest;
+import bank.jms.request.GetAccountRequest;
+import bank.jms.request.GetBalanceRequest;
 import bank.jms.request.IsActiveRequest;
 import bank.jms.request.Request;
+import bank.jms.request.TransferRequest;
+import bank.jms.request.WithdrawRequest;
 
 public class ClientBank implements IBank{
 	
@@ -45,27 +52,42 @@ public class ClientBank implements IBank{
 
 	@Override
 	public boolean closeAccount(String number) throws IOException {
-		// TODO Auto-generated method stub
-		return false;
+		sender.send(queue, new CloseAccountRequest(number));
+		CloseAccountRequest r = receiver.receiveBody(CloseAccountRequest.class);
+		return r.isClosed();
 	}
 
 	@Override
 	public Set<String> getAccountNumbers() throws IOException {
-		// TODO Auto-generated method stub
-		return null;
+		sender.send(queue, new GetAccountNumbersRequest());
+		GetAccountNumbersRequest r = receiver.receiveBody(GetAccountNumbersRequest.class);
+		return r.getAccNumbers();
 	}
 
 	@Override
 	public IAccount getAccount(String number) throws IOException {
-		// TODO Auto-generated method stub
-		return null;
+		sender.send(queue, new GetAccountRequest(number));
+		GetAccountRequest r = receiver.receiveBody(GetAccountRequest.class);
+		return new ClientAccount(number,r.getOwner(),sender,receiver, queue);
 	}
 
 	@Override
 	public void transfer(IAccount a, IAccount b, double amount)
 			throws IOException, IllegalArgumentException, OverdrawException,
 			InactiveException {
-		// TODO Auto-generated method stub
+		sender.send(queue, new TransferRequest(a.getNumber(), b.getNumber(),amount));
+		TransferRequest r = receiver.receiveBody(TransferRequest.class);
+		Exception exc = r.getException();
+		
+		if(exc != null){
+			if(exc instanceof IllegalArgumentException ) {
+				throw (IllegalArgumentException)exc;
+			} else if(exc instanceof InactiveException){
+				throw (InactiveException) exc;
+			} else if(exc instanceof OverdrawException){
+				throw (OverdrawException) exc;
+			}
+		}
 		
 	}
 	
@@ -108,21 +130,44 @@ public class ClientBank implements IBank{
 		@Override
 		public void deposit(double amount) throws IOException,
 				IllegalArgumentException, InactiveException {
-			// TODO Auto-generated method stub
 			
+			sender.send(queue, new DepositRequest(number, amount));
+			DepositRequest r = receiver.receiveBody(DepositRequest.class);
+			Exception exc = r.getException();
+			
+			if(exc != null){
+				if(exc instanceof IllegalArgumentException ) {
+					throw (IllegalArgumentException)exc;
+				} else if(exc instanceof InactiveException){
+					throw (InactiveException) exc;
+				} 
+			}			
 		}
 
 		@Override
 		public void withdraw(double amount) throws IOException,
 				IllegalArgumentException, OverdrawException, InactiveException {
-			// TODO Auto-generated method stub
 			
+			sender.send(queue, new WithdrawRequest(number, amount));
+			WithdrawRequest r = receiver.receiveBody(WithdrawRequest.class);
+			Exception exc = r.getException();
+			
+			if(exc != null){
+				if(exc instanceof IllegalArgumentException ) {
+					throw (IllegalArgumentException)exc;
+				} else if(exc instanceof InactiveException){
+					throw (InactiveException) exc;
+				} else if(exc instanceof OverdrawException){
+					throw (OverdrawException) exc;
+				}
+			}
 		}
 
 		@Override
 		public double getBalance() throws IOException {
-			// TODO Auto-generated method stub
-			return 0;
+			sender.send(queue, new GetBalanceRequest(number));
+			GetBalanceRequest r = receiver.receiveBody(GetBalanceRequest.class);
+			return r.getBalance();
 		}
 		
 	}

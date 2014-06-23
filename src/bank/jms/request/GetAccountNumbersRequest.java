@@ -5,7 +5,7 @@ import java.util.Set;
 
 import bank.IBank;
 
-public class getAccountNumbersRequest extends Request{
+public class GetAccountNumbersRequest extends Request{
 
 	private Set<String> accountNumbers;
 	
