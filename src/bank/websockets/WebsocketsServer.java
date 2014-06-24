@@ -23,7 +23,9 @@ import bank.jms.ServerBank;
 import bank.requests.Request;
 
 
-@ServerEndpoint("/bank")
+@ServerEndpoint(value = "/bank",
+		decoders = RequestDecoder.class,
+		encoders = RequestEncoder.class)
 public class WebsocketsServer {
 
 	private static ServerBank bank;
