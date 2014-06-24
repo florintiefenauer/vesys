@@ -17,7 +17,7 @@ import javax.naming.InitialContext;
 import bank.Bank;
 import bank.BankDriver2;
 import bank.IBank;
-import bank.jms.request.Request;
+import bank.requests.Request;
 
 public class Server {
 

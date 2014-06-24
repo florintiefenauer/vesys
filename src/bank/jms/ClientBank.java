@@ -15,16 +15,16 @@ import bank.IAccount;
 import bank.IBank;
 import bank.InactiveException;
 import bank.OverdrawException;
-import bank.jms.request.CloseAccountRequest;
-import bank.jms.request.CreateAccountRequest;
-import bank.jms.request.DepositRequest;
-import bank.jms.request.GetAccountNumbersRequest;
-import bank.jms.request.GetAccountRequest;
-import bank.jms.request.GetBalanceRequest;
-import bank.jms.request.IsActiveRequest;
-import bank.jms.request.Request;
-import bank.jms.request.TransferRequest;
-import bank.jms.request.WithdrawRequest;
+import bank.requests.CloseAccountRequest;
+import bank.requests.CreateAccountRequest;
+import bank.requests.DepositRequest;
+import bank.requests.GetAccountNumbersRequest;
+import bank.requests.GetAccountRequest;
+import bank.requests.GetBalanceRequest;
+import bank.requests.IsActiveRequest;
+import bank.requests.Request;
+import bank.requests.TransferRequest;
+import bank.requests.WithdrawRequest;
 
 public class ClientBank implements IBank{
 	

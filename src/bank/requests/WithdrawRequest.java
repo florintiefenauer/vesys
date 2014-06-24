@@ -1,16 +1,17 @@
-package bank.jms.request;
+package bank.requests;
 
 import java.io.IOException;
 
 import bank.IAccount;
 import bank.IBank;
 
-public class DepositRequest extends Request {
+public class WithdrawRequest extends Request {
+
 	private String number;
 	private double amount;
 	
 	
-	public DepositRequest (String number, double amount){
+	public WithdrawRequest (String number, double amount){
 		this.number = number;
 		this.amount = amount;
 	}
@@ -21,7 +22,7 @@ public class DepositRequest extends Request {
 			IAccount a = b.getAccount(this.number);
 			if (a != null){
 				try {
-					a.deposit(this.amount);
+					a.withdraw(this.amount);
 				} catch (Exception e) {
 					this.setException(e);
 				}

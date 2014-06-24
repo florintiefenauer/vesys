@@ -1,4 +1,4 @@
-package bank.jms.request;
+package bank.requests;
 
 import java.io.IOException;
 import java.util.Set;
