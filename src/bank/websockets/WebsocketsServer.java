@@ -1,16 +1,13 @@
 package bank.websockets;
 
-import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
 
 import javax.websocket.CloseReason;
-import javax.websocket.EncodeException;
 import javax.websocket.OnClose;
 import javax.websocket.OnError;
 import javax.websocket.OnMessage;
 import javax.websocket.OnOpen;
-import javax.websocket.RemoteEndpoint;
 import javax.websocket.Session;
 import javax.websocket.server.ServerEndpoint;
 
@@ -18,7 +15,6 @@ import org.glassfish.tyrus.server.Server;
 
 import bank.Bank;
 import bank.BankDriver2;
-import bank.IBank;
 import bank.jms.ServerBank;
 import bank.requests.Request;
 
@@ -32,6 +28,8 @@ public class WebsocketsServer {
 	private static List<Session> sessions = new LinkedList<>();
 	
 	public static void main(String[] args) throws Exception {
+		
+		
 		Server server = new Server("localhost", 2222, "/websockets", WebsocketsServer.class);
 		server.start();
 		System.out.println("Server started...");
@@ -51,6 +49,9 @@ public class WebsocketsServer {
 		};
 			
 		bank = new ServerBank(new Bank(), handler);
+		
+		System.out.println("Server started, key to stop the server"); 
+		System.in.read();
 	}
 	
 	@OnOpen
