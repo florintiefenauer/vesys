@@ -1,7 +1,11 @@
 package bank.websockets;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.nio.ByteBuffer;
 
+import javax.media.jai.operator.EncodeDescriptor;
 import javax.websocket.EncodeException;
 import javax.websocket.Encoder;
 import javax.websocket.EndpointConfig;
@@ -18,8 +22,15 @@ public class RequestEncoder implements Encoder.Binary<Request> {
 
 	@Override
 	public ByteBuffer encode(Request obj) throws EncodeException {
-		// TODO Auto-generated method stub
-		return null;
+		try {
+			ByteArrayOutputStream baos = new ByteArrayOutputStream();
+			ObjectOutputStream oos = new ObjectOutputStream(baos);
+			oos.writeObject(obj);
+			oos.flush(); oos.close();
+			return ByteBuffer.wrap(baos.toByteArray());
+		} catch (IOException e){
+			throw new EncodeException(obj, e.getMessage(), e);
+		}
 	}
 
 }
